@@ -9,6 +9,8 @@
 #include <string>
 #include <stdlib.h>
 #include <vector>
+#include <random>
+#include <conio.h>
 #include "player.h"
 #include "mainMenu.h"
 #include "enemy.h"
@@ -33,7 +35,7 @@ void intro(void)
 {
 	std::cout
 		<< "You are <player>. You have lived all 20 years of your life in <town>.\n"
-		<< "Insert story here\nblah blah blah"
+		<< "Insert story here\nblah blah blah\n\n"
 		<< "Press enter to continue.\n";
 	
 	std::cin.ignore();
@@ -42,29 +44,207 @@ void intro(void)
 
 }
 
-static char askMovement(void)
+int random_num(const int start, const int max)
 {
-	unsigned char move; 
+	int random = start + rand() % (max);
+	return random;
+}
 
-	std::cout
-		<< "Which direction would you like to go?\n"
-		<< "w. North\n"
-		<< "a. West\n"
-		<< "s. South\n"
-		<< "d. East\n"
-		<< "Selection: ";
+const int enemy1[2] = { random_num(1, 18), random_num(1, 18) };
+const int enemy2[2] = { random_num(1, 18), random_num(1, 18) };
+const int enemy3[2] = { random_num(1, 18), random_num(1, 18) };
+const int enemy4[2] = { random_num(1, 18), random_num(1, 18) };
+const int enemy5[2] = { random_num(1, 18), random_num(1, 18) };
 
-	std::cin >> move;
+void map(int x, int y)
+{
 
-	return move;
+	char spaces[20][20];
+
+	char player = 'o';								//player identifier on the map
+	char emptySpace = '.';							//empty space identifier on the map
+	char town = 'T';
+	char dungeon = 'D';
+	char enemy = 'E';
+
+	//std::cout << "+-----+" << std::endl;
+	std::cout << "+";
+	for (int k = 0; k <= 19; k++)
+		std::cout << "-";
+	std::cout << "+";
+	std::cout << std::endl;
+
+	for (int i = 0; i <= 19; i++)
+	{
+		std::cout << "|";
+		for (int j = 0; j <= 19; j++)
+		{
+			if (i == 4 && j == 15)
+			{
+				spaces[i][j] = dungeon;
+				std::cout << spaces[i][j];
+			}
+			else if (i == 17 && j == 9)
+			{
+				spaces[i][j] = town;
+				std::cout << spaces[i][j];
+			}
+			else if (i == enemy1[0] && j == enemy1[1])
+			{
+				spaces[i][j] = enemy;
+				std::cout << spaces[i][j];
+			}
+			else if (i == enemy2[0] && j == enemy2[1])
+			{
+				spaces[i][j] = enemy;
+				std::cout << spaces[i][j];
+			}
+			else if (i == enemy3[0] && j == enemy3[1])
+			{
+				spaces[i][j] = enemy;
+				std::cout << spaces[i][j];
+			}
+			else if (i == enemy4[0] && j == enemy4[1])
+			{
+				spaces[i][j] = enemy;
+				std::cout << spaces[i][j];
+			}
+			else if (i == enemy5[0] && j == enemy5[1])
+			{
+				spaces[i][j] = enemy;
+				std::cout << spaces[i][j];
+			}
+			else if (i == x && j == y)
+			{
+				spaces[i][j] = player;
+				std::cout << spaces[i][j];
+			}
+			else
+			{
+				spaces[i][j] = emptySpace;
+				std::cout << spaces[i][j];
+			}
+		}
+		std::cout << "|" << std::endl;
+	}
+	std::cout << "+";
+	for (int k = 0; k <= 19; k++)
+		std::cout << "-";
+	std::cout << "+";
+	std::cout << std::endl;
+}
+
+void askMovement(player &player)
+{
+	int move; 
+	bool validMove = false;
+
+	while (!validMove)
+	{
+		std::cout
+			<< "Use your arrow keys to move.\n";
+			//<< "1. Up\n"
+			//<< "2. Down\n"
+			//<< "3. Left\n"
+			//<< "4. Right\n"
+			//<< "Selection: ";
+
+		const enum arrowKey
+		{
+			KEY_UP = 72,
+			KEY_LEFT = 75,
+			KEY_DOWN = 80,
+			KEY_RIGHT = 77
+		};
+
+		switch (_getch())
+		{
+		case(KEY_UP):
+			//move = 1;
+			player.posX -= 1;
+			if (player.posX < 0 || player.posX > 20)
+			{
+				player.posX += 1;
+			}
+			break;
+		case(KEY_DOWN):
+			//move = 2;
+			player.posX += 1;
+			if (player.posX < 0 || player.posX > 19)
+			{
+				player.posX -= 1;
+			}
+			break;
+		case(KEY_LEFT):
+			//move = 3;
+			player.posY -= 1;
+			if (player.posY < 0 || player.posY > 20)
+			{
+				player.posY += 1;
+			}
+			break;
+		case(KEY_RIGHT):
+			//move = 4;
+			player.posY += 1;
+			if (player.posY < 0 || player.posY > 19)
+			{
+				player.posY -= 1;
+			}
+			break;
+		}
+
+		//std::cin >> move;
+
+		validMove = true;
+	
+	}
+	/*
+	if (move == 1)
+	{
+		player.posX -= 1;
+		if (player.posX < 0 || player.posX > 20)
+		{
+			player.posX += 1;
+		}
+	}
+	else if (move == 2)
+	{
+		player.posX += 1;
+		if (player.posX < 0 || player.posX > 19)
+		{
+			player.posX -= 1;
+		}
+	}
+	else if (move == 3)
+	{
+		player.posY -= 1;
+		if (player.posY < 0 || player.posY > 20)
+		{
+			player.posY += 1;
+		}
+	}
+	else if (move == 4)
+	{
+		player.posY += 1;
+		if (player.posY < 0 || player.posY > 19)
+		{
+			player.posY -= 1;
+		}
+	}
+	*/
+	system("CLS");
 
 }
 
 int main(void)
 {
+	srand(time(NULL));
+
 	int startChoice = startScreen();
 	bool playGame = false;
 	bool quitGame = false;
+
+	player playerOne;
 
 	if (startChoice == 1)
 	{
@@ -77,11 +257,17 @@ int main(void)
 		quitGame = true;
 		return 0;
 	}
-	
+
+	system("CLS");							//use to clear the screen to make space for new player map
+
 	while (playGame)
 	{
 		//game loop here
-		askMovement();
+//		map();
+		//askMovement();
+		map(playerOne.posX, playerOne.posY);
+		askMovement(playerOne);
+		
 
 		
 	}

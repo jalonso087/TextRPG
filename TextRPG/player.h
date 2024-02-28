@@ -31,13 +31,15 @@ protected:
 public:
 
 	int level,
-		xcoord,
-		ycoord;
+		posX,
+		posY;
 
 
 	player()
 	{
 		level = 1;
+		posX = 0;
+		posY = 0;
 	}
 
 	char movement()
