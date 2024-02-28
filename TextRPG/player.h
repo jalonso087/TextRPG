@@ -4,6 +4,12 @@ class player
 {
 private:
 
+
+
+protected:
+
+public:
+
 	//unisnged char uses less memory than int. 1 byte (8 bit) vs 4 bytes (32 bits)
 	const enum weapons : unsigned char
 	{
@@ -26,10 +32,6 @@ private:
 		I_TOWNPORTAL
 	};
 
-protected:
-
-public:
-
 	int level,
 		posX,
 		posY;
@@ -41,6 +43,12 @@ public:
 		posX = 0;
 		posY = 0;
 	}
+
+	//std::string inventory(player& player, std::string item)
+	//{
+	//	std::string contents[10];
+	//
+	//}
 
 	char movement()
 	{

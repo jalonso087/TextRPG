@@ -15,7 +15,10 @@
 #include "mainMenu.h"
 #include "enemy.h"
 
+
+
 void visitTown(void);
+char enemyEncounter(enemy::enemies monster);
 
 int startScreen(void)
 {
@@ -52,24 +55,30 @@ int random_num(const int start, const int max)
 	return random;
 }
 
-const int enemy1[2] = { random_num(1, 18), random_num(1, 18) };
-const int enemy2[2] = { random_num(1, 18), random_num(1, 18) };
-const int enemy3[2] = { random_num(1, 18), random_num(1, 18) };
-const int enemy4[2] = { random_num(1, 18), random_num(1, 18) };
-const int enemy5[2] = { random_num(1, 18), random_num(1, 18) };
 
 void map(int x, int y)
 {
 
+
+	const int enemy1[2] = { random_num(1, 18), random_num(1, 18) };
+	const int enemy2[2] = { random_num(1, 18), random_num(1, 18) };
+	const int enemy3[2] = { random_num(1, 18), random_num(1, 18) };
+	const int enemy4[2] = { random_num(1, 18), random_num(1, 18) };
+	const int enemy5[2] = { random_num(1, 18), random_num(1, 18) };
+
+	//enemy enemy1(enemy::enemies::E_RAT);
+	//enemy enemy2(enemy::enemies::E_GOBLIN);
+	//enemy enemy3(enemy::enemies::E_THIEF);
+	//enemy enemy4(enemy::enemies::E_WOLF);
+
 	char spaces[20][20];
 
-	char player = 'o';								//player identifier on the map
-	char emptySpace = '.';							//empty space identifier on the map
+	char player = 'o';	
+	char emptySpace = '.';							
 	char town = 'T';
 	char dungeon = 'D';
 	char enemy = 'E';
 
-	//std::cout << "+-----+" << std::endl;
 	std::cout << "+";
 	for (int k = 0; k <= 19; k++)
 		std::cout << "-";
@@ -126,7 +135,24 @@ void map(int x, int y)
 				spaces[i][j] = emptySpace;
 				std::cout << spaces[i][j];
 			}
+
+
+
 		}
+
+		if (x == enemy1[0] && y == enemy1[1])
+			if(enemyEncounter(enemy::enemies::E_RAT) == 1)
+			{
+				delete enemy1;
+			}
+			
+		else if (x == enemy2[0] && y == enemy2[1])
+			enemyEncounter(enemy::enemies::E_GOBLIN);
+		else if (x == enemy3[0] && y == enemy3[1])
+			enemyEncounter(enemy::enemies::E_THIEF);
+		else if (x == enemy4[0] && y == enemy4[1])
+			enemyEncounter(enemy::enemies::E_WOLF);
+
 		std::cout << "|" << std::endl;
 	}
 	std::cout << "+";
@@ -134,6 +160,50 @@ void map(int x, int y)
 		std::cout << "-";
 	std::cout << "+";
 	std::cout << std::endl;
+
+	
+}
+
+char enemyEncounter(enemy::enemies monster)
+{
+	int choice;
+	unsigned char result;
+
+	system("CLS");
+	std::cout << "You encountered a(n) ";
+	switch(monster)
+	{
+	case(0):
+		std::cout << "rat!\n";
+		break;
+	case(1):
+		std::cout << "goblin!\n";
+		break;
+	case(2):
+		std::cout << "thief!\n";
+		break;
+	case(3):
+		std::cout << "wolf!\n";
+		break;
+	}
+
+	std::cout << "1. Attack\n"
+		<< "Selection: ";
+
+	std::cin >> choice;
+
+	if (choice == 1)
+	{
+		result = 1;
+	}
+
+	std::cin.ignore();
+	std::cin.get();
+
+	system("CLS");
+
+	return result;
+
 }
 
 void visitTown(void)
@@ -192,11 +262,6 @@ void askMovement(player &player)
 	{
 		std::cout
 			<< "Use your arrow keys to move.\n";
-			//<< "1. Up\n"
-			//<< "2. Down\n"
-			//<< "3. Left\n"
-			//<< "4. Right\n"
-			//<< "Selection: ";
 
 		const enum arrowKey
 		{
@@ -209,32 +274,45 @@ void askMovement(player &player)
 		switch (_getch())
 		{
 		case(KEY_UP):
-			//move = 1;
 			player.posX -= 1;
+			if (player.posX == 17 && player.posY == 9)
+			{
+				visitTown();
+			}
 			if (player.posX < 0 || player.posX > 20)
 			{
 				player.posX += 1;
+				
 			}
 			break;
 		case(KEY_DOWN):
-			//move = 2;
 			player.posX += 1;
+			if (player.posX == 17 && player.posY == 9)
+			{
+				visitTown();
+			}
 			if (player.posX < 0 || player.posX > 19)
 			{
 				player.posX -= 1;
 			}
 			break;
 		case(KEY_LEFT):
-			//move = 3;
 			player.posY -= 1;
+			if (player.posX == 17 && player.posY == 9)
+			{
+				visitTown();
+			}
 			if (player.posY < 0 || player.posY > 20)
 			{
 				player.posY += 1;
 			}
 			break;
 		case(KEY_RIGHT):
-			//move = 4;
 			player.posY += 1;
+			if (player.posX == 17 && player.posY == 9)
+			{
+				visitTown();
+			}
 			if (player.posY < 0 || player.posY > 19)
 			{
 				player.posY -= 1;
@@ -242,53 +320,27 @@ void askMovement(player &player)
 			break;
 		}
 
-		//std::cin >> move;
+		
 
 		validMove = true;
 	
 	}
 
-	if (player.posX == 17 && player.posY == 9)
-	{
-		visitTown();
-	}
+	
 
-	/*
-	if (move == 1)
-	{
-		player.posX -= 1;
-		if (player.posX < 0 || player.posX > 20)
-		{
-			player.posX += 1;
-		}
-	}
-	else if (move == 2)
-	{
-		player.posX += 1;
-		if (player.posX < 0 || player.posX > 19)
-		{
-			player.posX -= 1;
-		}
-	}
-	else if (move == 3)
-	{
-		player.posY -= 1;
-		if (player.posY < 0 || player.posY > 20)
-		{
-			player.posY += 1;
-		}
-	}
-	else if (move == 4)
-	{
-		player.posY += 1;
-		if (player.posY < 0 || player.posY > 19)
-		{
-			player.posY -= 1;
-		}
-	}
-	*/
 	system("CLS");
 
+}
+
+
+
+float damageFormula(player::weapons weapon)
+{
+	float dmg;
+
+	dmg = random_num((weapon+1), (weapon+1));
+
+	return dmg;
 }
 
 int main(void)
@@ -300,6 +352,7 @@ int main(void)
 	bool quitGame = false;
 
 	player playerOne;
+
 
 	if (startChoice == 1)
 	{
@@ -313,13 +366,13 @@ int main(void)
 		return 0;
 	}
 
-	system("CLS");							//use to clear the screen to make space for new player map
+	system("CLS");		//use to clear the screen to make space for new player map
+
+	
 
 	while (playGame)
 	{
 		//game loop here
-//		map();
-		//askMovement();
 		map(playerOne.posX, playerOne.posY);
 		askMovement(playerOne);
 		

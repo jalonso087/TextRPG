@@ -10,27 +10,34 @@ public:
 
 	const enum enemies : unsigned char
 	{
-		e_rat,
-		e_goblin,
-		e_thief,
-		e_wolf,
-		e_skeleton,
-		e_spider,
-		e_orc,
-		e_wizard,
-		e_ogre
+		E_RAT,
+		E_GOBLIN,
+		E_THIEF,
+		E_WOLF,
+		E_SKELETON,
+		E_SPIDER,
+		E_ORC,
+		E_WIZARD,
+		E_OGRE
 	};
 
 	const enum boss : unsigned char
 	{
-		b_rat,
-		b_goblin,
-		b_thief,
-		b_wolf,
-		b_skeleton,
-		b_spider,
-		b_orc,
-		b_wizard,
-		b_ogre
+		B_RAT,
+		B_GOBLIN,
+		B_THIEF,
+		B_WOLF,
+		B_SKELETON,
+		B_SPIDER,
+		B_ORC,
+		B_WIZARD,
+		B_OGRE
 	};
+
+	enemy(enemies monster) 
+	{
+		enemies mob = monster;
+
+	};
+
 };
