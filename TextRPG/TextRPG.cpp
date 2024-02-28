@@ -73,7 +73,7 @@ void map(int x, int y)
 
 	char spaces[20][20];
 
-	char player = 'o';	
+	char player = 'X';	
 	char emptySpace = '.';							
 	char town = 'T';
 	char dungeon = 'D';
@@ -141,11 +141,7 @@ void map(int x, int y)
 		}
 
 		if (x == enemy1[0] && y == enemy1[1])
-			if(enemyEncounter(enemy::enemies::E_RAT) == 1)
-			{
-				delete enemy1;
-			}
-			
+			enemyEncounter(enemy::enemies::E_RAT);
 		else if (x == enemy2[0] && y == enemy2[1])
 			enemyEncounter(enemy::enemies::E_GOBLIN);
 		else if (x == enemy3[0] && y == enemy3[1])
