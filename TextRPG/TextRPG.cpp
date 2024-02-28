@@ -1,8 +1,8 @@
 //**********************************
 //* TextRPG
 //* Javier Alonso
-//* 2/27/24
-//* v0.01
+//* 2/27/24 - Present
+//* v0.02
 //**********************************
 
 #include <iostream>
@@ -14,6 +14,8 @@
 #include "player.h"
 #include "mainMenu.h"
 #include "enemy.h"
+
+void visitTown(void);
 
 int startScreen(void)
 {
@@ -134,6 +136,53 @@ void map(int x, int y)
 	std::cout << std::endl;
 }
 
+void visitTown(void)
+{
+
+	const static enum prices
+	{
+		P_HEALTHPOTION = 20,
+		P_STICK = 10,
+		P_CLUB = 25,
+		P_HAMMER = 100
+	};
+
+	int choice;
+
+	std::cout
+		<< "Welcome to <town>.\n"
+		<< "1. Inn\n"
+		<< "2. Shop\n"
+		<< "3. Leave\n"
+		<< "Selection: ";
+	
+	std::cin >> choice;
+
+	
+
+	if (choice == 2)
+	{
+		system("CLS");
+		int shopChoice;
+
+		std::cout
+			<< "Welcome to the item shop!\n"
+			<< "1. Health Potion - "
+			<< P_HEALTHPOTION
+			<< "g\n2. Stick - "
+			<< P_STICK
+			<< "g\n3. Club - "
+			<< P_CLUB
+			<< "g\n4. Hammer - "
+			<< P_HAMMER
+			<< "g\n"
+			<< "Selection: ";
+
+
+		std::cin >> shopChoice;
+	}
+}
+
 void askMovement(player &player)
 {
 	int move; 
@@ -198,6 +247,12 @@ void askMovement(player &player)
 		validMove = true;
 	
 	}
+
+	if (player.posX == 17 && player.posY == 9)
+	{
+		visitTown();
+	}
+
 	/*
 	if (move == 1)
 	{
