@@ -56,13 +56,21 @@ public:
 	//
 	//}
 
-	int showHp(void)
+	int getHP(const static Player& character)
 	{
-
+		return character.playerVariables.hp;
 	}
 
-	char movement()
+	int setHP(const static Player& character, int hpChange)
 	{
+		if (hpChange >= 0)
+		{
+			character.playerVariables.hp -= hpChange;
+		}
+		else
+		{
+			character.playerVariables.hp += hpChange;
+		}
 
 	}
 

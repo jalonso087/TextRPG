@@ -54,4 +54,22 @@ public:
 
 	};
 
+	int getHP(const static Enemy& enemy)
+	{
+		return enemy.enemyVariables.hp;
+	}
+
+	int setHP(const static Enemy& enemy, int hpChange)
+	{
+		if (hpChange >= 0)
+		{
+			enemy.enemyVariables.hp -= hpChange;
+		}
+		else
+		{
+			enemy.enemyVariables.hp += hpChange;
+		}
+		
+	}
+
 };
