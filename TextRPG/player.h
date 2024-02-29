@@ -32,16 +32,22 @@ public:
 		I_TOWNPORTAL
 	};
 
-	int level;
-	int posX;
-	int posY;
+	
+	struct
+	{
+		int level = 1;
+		int hp = (level * 2) + 10;
+		int posX = 0;
+		int posY = 0;
 
+	}playerVariables;
 
 	Player()
 	{
-		level = 1;
-		posX = 0;
-		posY = 0;
+		playerVariables.level;
+		playerVariables.hp;
+		playerVariables.posX;
+		playerVariables.posY;
 	}
 
 	//std::string inventory(player& player, std::string item)
@@ -49,6 +55,11 @@ public:
 	//	std::string contents[10];
 	//
 	//}
+
+	int showHp(void)
+	{
+
+	}
 
 	char movement()
 	{

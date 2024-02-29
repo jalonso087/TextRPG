@@ -121,27 +121,27 @@ void map(const static Player &character)
 				spaces[i][j] = mapMarkers.town;
 				std::cout << spaces[i][j];
 			}
-			else if (i == character.posX && j == character.posY)
+			else if (i == character.playerVariables.posX && j == character.playerVariables.posY)
 			{
 				spaces[i][j] = mapMarkers.player;
 				std::cout << spaces[i][j];
 			}
-			else if (i == rat.posX && j == rat.posY)
+			else if (i == rat.enemyVariables.posX && j == rat.enemyVariables.posY)
 			{
 				spaces[i][j] = mapMarkers.enemy;
 				std::cout << spaces[i][j];
 			}
-			else if (i == goblin.posX && j == goblin.posY)
+			else if (i == goblin.enemyVariables.posX && j == goblin.enemyVariables.posY)
 			{
 				spaces[i][j] = mapMarkers.enemy;
 				std::cout << spaces[i][j];
 			}
-			else if (i == thief.posX && j == thief.posY)
+			else if (i == thief.enemyVariables.posX && j == thief.enemyVariables.posY)
 			{
 				spaces[i][j] = mapMarkers.enemy;
 				std::cout << spaces[i][j];
 			}
-			else if (i == wolf.posX && j == wolf.posY)
+			else if (i == wolf.enemyVariables.posX && j == wolf.enemyVariables.posY)
 			{
 				spaces[i][j] = mapMarkers.enemy;
 				std::cout << spaces[i][j];
@@ -268,7 +268,7 @@ void visitTown(Player &character)
 	}
 	else if (choice == 3)
 	{
-		character.posX -= 1;
+		character.playerVariables.posX -= 1;
 	}
 	system("CLS");
 }
@@ -299,54 +299,54 @@ void askMovement(Player &player)
 		{
 		case(KEY_W):
 		{
-			player.posX -= 1;
-			if (player.posX == mapMarkerLocations.townX && player.posY == mapMarkerLocations.townY)
+			player.playerVariables.posX -= 1;
+			if (player.playerVariables.posX == mapMarkerLocations.townX && player.playerVariables.posY == mapMarkerLocations.townY)
 			{
 				visitTown(player);
 			}
-			if (player.posX < 0 || player.posX > mapX)
+			if (player.playerVariables.posX < 0 || player.playerVariables.posX > mapX)
 			{
-				player.posX += 1;
+				player.playerVariables.posX += 1;
 
 			}
 			break;
 		}
 		case(KEY_S):
 		{
-			player.posX += 1;
-			if (player.posX == mapMarkerLocations.townX && player.posY == mapMarkerLocations.townY)
+			player.playerVariables.posX += 1;
+			if (player.playerVariables.posX == mapMarkerLocations.townX && player.playerVariables.posY == mapMarkerLocations.townY)
 			{
 				visitTown(player);
 			}
-			if (player.posX < 0 || player.posX >(mapX - 1))
+			if (player.playerVariables.posX < 0 || player.playerVariables.posX >(mapX - 1))
 			{
-				player.posX -= 1;
+				player.playerVariables.posX -= 1;
 			}
 			break;
 		}
 		case(KEY_A):
 		{
-			player.posY -= 1;
-			if (player.posX == mapMarkerLocations.townX && player.posY == mapMarkerLocations.townY)
+			player.playerVariables.posY -= 1;
+			if (player.playerVariables.posX == mapMarkerLocations.townX && player.playerVariables.posY == mapMarkerLocations.townY)
 			{
 				visitTown(player);
 			}
-			if (player.posY < 0 || player.posY > mapY)
+			if (player.playerVariables.posY < 0 || player.playerVariables.posY > mapY)
 			{
-				player.posY += 1;
+				player.playerVariables.posY += 1;
 			}
 			break;
 		}
 		case(KEY_D):
 		{
-			player.posY += 1;
-			if (player.posX == mapMarkerLocations.townX && player.posY == mapMarkerLocations.townY)
+			player.playerVariables.posY += 1;
+			if (player.playerVariables.posX == mapMarkerLocations.townX && player.playerVariables.posY == mapMarkerLocations.townY)
 			{
 				visitTown(player);
 			}
-			if (player.posY < 0 || player.posY >(mapY - 1))
+			if (player.playerVariables.posY < 0 || player.playerVariables.posY >(mapY - 1))
 			{
-				player.posY -= 1;
+				player.playerVariables.posY -= 1;
 			}
 			break;
 		}

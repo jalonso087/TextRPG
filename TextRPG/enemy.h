@@ -36,16 +36,21 @@ public:
 		B_OGRE
 	};
 
-	int hp;
-	int posX;
-	int posY;
+	
+	struct
+	{
+		int hp = (enemies::E_RAT) + 5;
+		int posX = (random_num(1, 18));
+		int posY = (random_num(1, 18));
+		
+	}enemyVariables;
 
 	Enemy() 
 	{
 		
-		hp = 5;
-		posX = random_num(1, 18);
-		posY = random_num(1, 18);
+		enemyVariables.hp;
+		enemyVariables.posX;
+		enemyVariables.posY;
 
 	};
 
