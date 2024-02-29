@@ -59,7 +59,7 @@ public:
 		return enemy.enemyVariables.hp;
 	}
 
-	int setHP(const static Enemy& enemy, int hpChange)
+	int setHP(Enemy& enemy, int hpChange)
 	{
 		if (hpChange >= 0)
 		{

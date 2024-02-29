@@ -36,18 +36,20 @@ public:
 	struct
 	{
 		int level = 1;
-		int hp = (level * 2) + 10;
+		int maxHP = (level * 2) + 10;
 		int posX = 0;
 		int posY = 0;
+		int currentHP;
 
 	}playerVariables;
 
 	Player()
 	{
 		playerVariables.level;
-		playerVariables.hp;
+		playerVariables.maxHP;
 		playerVariables.posX;
 		playerVariables.posY;
+		playerVariables.currentHP = playerVariables.maxHP;
 	}
 
 	//std::string inventory(player& player, std::string item)
@@ -56,20 +58,15 @@ public:
 	//
 	//}
 
-	int getHP(const static Player& character)
-	{
-		return character.playerVariables.hp;
-	}
-
-	int setHP(const static Player& character, int hpChange)
+	int setHP(const static int &hpChange)
 	{
 		if (hpChange >= 0)
 		{
-			character.playerVariables.hp -= hpChange;
+			playerVariables.currentHP -= hpChange;
 		}
 		else
 		{
-			character.playerVariables.hp += hpChange;
+			playerVariables.currentHP += hpChange;
 		}
 
 	}

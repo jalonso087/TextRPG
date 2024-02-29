@@ -94,7 +94,13 @@ Enemy wolf;
 
 void map(const static Player &character)
 {
+	//const static int currentHP = &character.getHP();
+	//ran into trouble using a get method on the player class, so resorted to accessing the variable directly. -- do this better on a refactor.
+	std::cout << "HP: " << character.playerVariables.currentHP << "/" << character.playerVariables.maxHP << std::endl;
+
 	char spaces[mapX][mapY];
+
+	//std::cout << currentHP << std::endl;
 
 	std::cout << "+";
 
