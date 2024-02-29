@@ -1,6 +1,8 @@
 #pragma once
 
-class enemy
+int random_num(const static int& start, const static int& max);
+
+class Enemy
 {
 private:
 
@@ -34,9 +36,16 @@ public:
 		B_OGRE
 	};
 
-	enemy(enemies monster) 
+	int hp;
+	int posX;
+	int posY;
+
+	Enemy() 
 	{
-		enemies mob = monster;
+		
+		hp = 5;
+		posX = random_num(1, 18);
+		posY = random_num(1, 18);
 
 	};
 

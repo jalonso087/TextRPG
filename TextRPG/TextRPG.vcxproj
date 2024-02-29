@@ -130,9 +130,9 @@
     <ClCompile Include="TextRPG.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="enemy.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="mainMenu.h" />
-    <ClInclude Include="player.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

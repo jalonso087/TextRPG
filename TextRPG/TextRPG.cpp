@@ -11,21 +11,29 @@
 #include <vector>
 #include <random>
 #include <conio.h>
+#include <Windows.h>
 #include "player.h"
 #include "mainMenu.h"
 #include "enemy.h"
 
+void visitTown(Player &character);
+char enemyEncounter(const static Enemy::enemies &monster);
+
+void gotoxy(short x, short y)
+{
+	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD position = { x, y };
+
+	SetConsoleCursorPosition(hStdout, position);
+}
 
 
-void visitTown(void);
-char enemyEncounter(enemy::enemies monster);
 
 int startScreen(void)
 {
 	int choice = 0;
 
-	std::cout << "Welcome to <TextRPG>!\n\n" << std::endl;
-
+	std::cout << "Welcome to <TextRPG>!\n" << std::endl;
 	std::cout
 		<< "1. Start Game\n"
 		<< "2. Quit Game\n\n"
@@ -45,128 +53,142 @@ void intro(void)
 	
 	std::cin.ignore();
 	std::cin.get();
+	
 	system("CLS");
 
 }
 
-int random_num(const int start, const int max)
+int random_num(const static int &start, const static int &max)
 {
 	int random = start + rand() % (max);
+	
 	return random;
 }
 
+const static int mapX = 20;
+const static int mapY = 20;
 
-void map(int x, int y)
+struct
 {
-
-
-	const int enemy1[2] = { random_num(1, 18), random_num(1, 18) };
-	const int enemy2[2] = { random_num(1, 18), random_num(1, 18) };
-	const int enemy3[2] = { random_num(1, 18), random_num(1, 18) };
-	const int enemy4[2] = { random_num(1, 18), random_num(1, 18) };
-	const int enemy5[2] = { random_num(1, 18), random_num(1, 18) };
-
-	//enemy enemy1(enemy::enemies::E_RAT);
-	//enemy enemy2(enemy::enemies::E_GOBLIN);
-	//enemy enemy3(enemy::enemies::E_THIEF);
-	//enemy enemy4(enemy::enemies::E_WOLF);
-
-	char spaces[20][20];
-
-	char player = 'X';	
-	char emptySpace = '.';							
+	char player = 'X';
+	char emptySpace = '.';
 	char town = 'T';
 	char dungeon = 'D';
 	char enemy = 'E';
 
+}mapMarkers;
+
+struct
+{
+	int dungeonX = 4;
+	int dungeonY = 15;
+	int townX = 17;
+	int townY = 9;
+
+}mapMarkerLocations;
+
+Enemy rat;
+Enemy goblin;
+Enemy thief;
+Enemy wolf;
+
+void map(const static Player &character)
+{
+	char spaces[mapX][mapY];
+
 	std::cout << "+";
-	for (int k = 0; k <= 19; k++)
+
+	for (int k = 0; k <= (mapX-1); k++)
+	{
 		std::cout << "-";
+	}
+
 	std::cout << "+";
 	std::cout << std::endl;
 
-	for (int i = 0; i <= 19; i++)
+	for (int i = 0; i <= (mapX - 1); i++)
 	{
 		std::cout << "|";
-		for (int j = 0; j <= 19; j++)
+		for (int j = 0; j <= (mapY - 1); j++)
 		{
-			if (i == 4 && j == 15)
+			if (i == mapMarkerLocations.dungeonX && j == mapMarkerLocations.dungeonY)
 			{
-				spaces[i][j] = dungeon;
+				spaces[i][j] = mapMarkers.dungeon;
 				std::cout << spaces[i][j];
 			}
-			else if (i == 17 && j == 9)
+			else if (i == mapMarkerLocations.townX && j == mapMarkerLocations.townY)
 			{
-				spaces[i][j] = town;
+				spaces[i][j] = mapMarkers.town;
 				std::cout << spaces[i][j];
 			}
-			else if (i == enemy1[0] && j == enemy1[1])
+			else if (i == character.posX && j == character.posY)
 			{
-				spaces[i][j] = enemy;
+				spaces[i][j] = mapMarkers.player;
 				std::cout << spaces[i][j];
 			}
-			else if (i == enemy2[0] && j == enemy2[1])
+			else if (i == rat.posX && j == rat.posY)
 			{
-				spaces[i][j] = enemy;
+				spaces[i][j] = mapMarkers.enemy;
 				std::cout << spaces[i][j];
 			}
-			else if (i == enemy3[0] && j == enemy3[1])
+			else if (i == goblin.posX && j == goblin.posY)
 			{
-				spaces[i][j] = enemy;
+				spaces[i][j] = mapMarkers.enemy;
 				std::cout << spaces[i][j];
 			}
-			else if (i == enemy4[0] && j == enemy4[1])
+			else if (i == thief.posX && j == thief.posY)
 			{
-				spaces[i][j] = enemy;
+				spaces[i][j] = mapMarkers.enemy;
 				std::cout << spaces[i][j];
 			}
-			else if (i == enemy5[0] && j == enemy5[1])
+			else if (i == wolf.posX && j == wolf.posY)
 			{
-				spaces[i][j] = enemy;
-				std::cout << spaces[i][j];
-			}
-			else if (i == x && j == y)
-			{
-				spaces[i][j] = player;
+				spaces[i][j] = mapMarkers.enemy;
 				std::cout << spaces[i][j];
 			}
 			else
 			{
-				spaces[i][j] = emptySpace;
+				spaces[i][j] = mapMarkers.emptySpace;
 				std::cout << spaces[i][j];
 			}
 
-
-
 		}
-
-		if (x == enemy1[0] && y == enemy1[1])
-			enemyEncounter(enemy::enemies::E_RAT);
-		else if (x == enemy2[0] && y == enemy2[1])
-			enemyEncounter(enemy::enemies::E_GOBLIN);
-		else if (x == enemy3[0] && y == enemy3[1])
-			enemyEncounter(enemy::enemies::E_THIEF);
-		else if (x == enemy4[0] && y == enemy4[1])
-			enemyEncounter(enemy::enemies::E_WOLF);
 
 		std::cout << "|" << std::endl;
 	}
+
 	std::cout << "+";
-	for (int k = 0; k <= 19; k++)
+	for (int k = 0; k <= (mapX-1); k++)
 		std::cout << "-";
 	std::cout << "+";
 	std::cout << std::endl;
 
-	
 }
 
-char enemyEncounter(enemy::enemies monster)
+/*
+if (x == enemy1[0] && y == enemy1[1])
+enemyEncounter(enemy::enemies::E_RAT);
+else if (x == enemy2[0] && y == enemy2[1])
+enemyEncounter(enemy::enemies::E_GOBLIN);
+else if (x == enemy3[0] && y == enemy3[1])
+enemyEncounter(enemy::enemies::E_THIEF);
+else if (x == enemy4[0] && y == enemy4[1])
+enemyEncounter(enemy::enemies::E_WOLF);
+
+const int enemy1[2] = { random_num(1, 18), random_num(1, 18) };
+const int enemy2[2] = { random_num(1, 18), random_num(1, 18) };
+const int enemy3[2] = { random_num(1, 18), random_num(1, 18) };
+const int enemy4[2] = { random_num(1, 18), random_num(1, 18) };
+const int enemy5[2] = { random_num(1, 18), random_num(1, 18) };
+*/
+
+char enemyEncounter(const static Enemy::enemies &monster)
 {
 	int choice;
 	unsigned char result;
 
 	system("CLS");
-	std::cout << "You encountered a(n) ";
+	std::cout << "You encountered a ";
 	switch(monster)
 	{
 	case(0):
@@ -201,8 +223,8 @@ char enemyEncounter(enemy::enemies monster)
 	return result;
 
 }
-
-void visitTown(void)
+//not const static because we update character position
+void visitTown(Player &character)
 {
 
 	const static enum prices
@@ -213,7 +235,7 @@ void visitTown(void)
 		P_HAMMER = 100
 	};
 
-	int choice;
+	int choice = 0;
 
 	std::cout
 		<< "Welcome to <town>.\n"
@@ -223,8 +245,6 @@ void visitTown(void)
 		<< "Selection: ";
 	
 	std::cin >> choice;
-
-	
 
 	if (choice == 2)
 	{
@@ -244,12 +264,16 @@ void visitTown(void)
 			<< "g\n"
 			<< "Selection: ";
 
-
 		std::cin >> shopChoice;
 	}
+	else if (choice == 3)
+	{
+		character.posX -= 1;
+	}
+	system("CLS");
 }
 
-void askMovement(player &player)
+void askMovement(Player &player)
 {
 	int move; 
 	bool validMove = false;
@@ -257,80 +281,82 @@ void askMovement(player &player)
 	while (!validMove)
 	{
 		std::cout
-			<< "Use your arrow keys to move.\n";
+			<< "Use your wasd keys to move.\n";
 
 		const enum arrowKey
 		{
 			KEY_UP = 72,
+			KEY_W = 119,
 			KEY_LEFT = 75,
+			KEY_A = 97,
 			KEY_DOWN = 80,
-			KEY_RIGHT = 77
+			KEY_S = 115,
+			KEY_RIGHT = 77,
+			KEY_D = 100
 		};
 
 		switch (_getch())
 		{
-		case(KEY_UP):
+		case(KEY_W):
+		{
 			player.posX -= 1;
-			if (player.posX == 17 && player.posY == 9)
+			if (player.posX == mapMarkerLocations.townX && player.posY == mapMarkerLocations.townY)
 			{
-				visitTown();
+				visitTown(player);
 			}
-			if (player.posX < 0 || player.posX > 20)
+			if (player.posX < 0 || player.posX > mapX)
 			{
 				player.posX += 1;
-				
+
 			}
 			break;
-		case(KEY_DOWN):
+		}
+		case(KEY_S):
+		{
 			player.posX += 1;
-			if (player.posX == 17 && player.posY == 9)
+			if (player.posX == mapMarkerLocations.townX && player.posY == mapMarkerLocations.townY)
 			{
-				visitTown();
+				visitTown(player);
 			}
-			if (player.posX < 0 || player.posX > 19)
+			if (player.posX < 0 || player.posX >(mapX - 1))
 			{
 				player.posX -= 1;
 			}
 			break;
-		case(KEY_LEFT):
+		}
+		case(KEY_A):
+		{
 			player.posY -= 1;
-			if (player.posX == 17 && player.posY == 9)
+			if (player.posX == mapMarkerLocations.townX && player.posY == mapMarkerLocations.townY)
 			{
-				visitTown();
+				visitTown(player);
 			}
-			if (player.posY < 0 || player.posY > 20)
+			if (player.posY < 0 || player.posY > mapY)
 			{
 				player.posY += 1;
 			}
 			break;
-		case(KEY_RIGHT):
+		}
+		case(KEY_D):
+		{
 			player.posY += 1;
-			if (player.posX == 17 && player.posY == 9)
+			if (player.posX == mapMarkerLocations.townX && player.posY == mapMarkerLocations.townY)
 			{
-				visitTown();
+				visitTown(player);
 			}
-			if (player.posY < 0 || player.posY > 19)
+			if (player.posY < 0 || player.posY >(mapY - 1))
 			{
 				player.posY -= 1;
 			}
 			break;
 		}
-
-		
-
+		}
 		validMove = true;
-	
-	}
-
-	
-
-	system("CLS");
-
+	}	
+	gotoxy(0, 0);
 }
 
-
-
-float damageFormula(player::weapons weapon)
+float damageFormula(const static Player::weapons &weapon)
 {
 	float dmg;
 
@@ -347,12 +373,12 @@ int main(void)
 	bool playGame = false;
 	bool quitGame = false;
 
-	player playerOne;
-
+	Player playerOne;
 
 	if (startChoice == 1)
 	{
 		playGame = true;
+		
 		system("CLS");
 		intro();
 	}
@@ -362,17 +388,13 @@ int main(void)
 		return 0;
 	}
 
-	system("CLS");		//use to clear the screen to make space for new player map
-
-	
+	system("CLS");		//use to clear the screen to make space for new player map	
 
 	while (playGame)
 	{
 		//game loop here
-		map(playerOne.posX, playerOne.posY);
+		map(playerOne);
 		askMovement(playerOne);
-		
-
 		
 	}
 

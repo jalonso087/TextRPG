@@ -1,6 +1,6 @@
 #pragma once
 
-class player
+class Player
 {
 private:
 
@@ -32,12 +32,12 @@ public:
 		I_TOWNPORTAL
 	};
 
-	int level,
-		posX,
-		posY;
+	int level;
+	int posX;
+	int posY;
 
 
-	player()
+	Player()
 	{
 		level = 1;
 		posX = 0;
