@@ -40,6 +40,8 @@ public:
 		int posX = 0;
 		int posY = 0;
 		int currentHP;
+		int gold = 0;
+		int currentWeapon = W_STICK;
 
 	}playerVariables;
 
@@ -50,6 +52,8 @@ public:
 		playerVariables.posX;
 		playerVariables.posY;
 		playerVariables.currentHP = playerVariables.maxHP;
+		playerVariables.gold;
+		playerVariables.currentWeapon;
 	}
 
 	//std::string inventory(player& player, std::string item)
@@ -57,6 +61,16 @@ public:
 	//	std::string contents[10];
 	//
 	//}
+
+	int getCurrentHP(void)
+	{
+		return playerVariables.currentHP;
+	}
+
+	int getMaxHP(void)
+	{
+		return playerVariables.maxHP;
+	}
 
 	int setHP(const static int &hpChange)
 	{

@@ -17,8 +17,10 @@
 #include "enemy.h"
 
 void visitTown(Player &character);
-char enemyEncounter(const static Enemy::enemies &monster);
+int enemyEncounter(Enemy &monster, const static Player &character);
+int damageFormula(const static Player& character);
 
+//found online
 void gotoxy(short x, short y)
 {
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -28,7 +30,7 @@ void gotoxy(short x, short y)
 }
 
 
-
+//probably add to display class on a refactor
 int startScreen(void)
 {
 	int choice = 0;
@@ -44,13 +46,15 @@ int startScreen(void)
 	return choice;
 }
 
+//probably add to display class on a refactor
 void intro(void)
 {
 	std::cout
-		<< "You are <player>. You have lived all 20 years of your life in <town>.\n"
-		<< "Insert story here\nblah blah blah\n\n"
+		<< "Instructions go here\n"
+		<< "Also instructions.\nMore instructions\n\n"
 		<< "Press enter to continue.\n";
 	
+	//just use cin to assign to a dummy variable on a refactor
 	std::cin.ignore();
 	std::cin.get();
 	
@@ -58,6 +62,7 @@ void intro(void)
 
 }
 
+//leave this as global variable -- on a refactor
 int random_num(const static int &start, const static int &max)
 {
 	int random = start + rand() % (max);
@@ -65,6 +70,7 @@ int random_num(const static int &start, const static int &max)
 	return random;
 }
 
+//maybe create a struct to house these together -- on a refactor
 const static int mapX = 20;
 const static int mapY = 20;
 
@@ -87,21 +93,48 @@ struct
 
 }mapMarkerLocations;
 
-Enemy rat;
-Enemy goblin;
-Enemy thief;
-Enemy wolf;
+Enemy rat(Enemy::E_RAT);
+Enemy goblin(Enemy::E_GOBLIN);
+Enemy thief(Enemy::E_THIEF);
+Enemy wolf(Enemy::E_WOLF);
 
-void map(const static Player &character)
+//bundle into a display class on a refactor
+void map(Player &character)
 {
-	//const static int currentHP = &character.getHP();
-	//ran into trouble using a get method on the player class, so resorted to accessing the variable directly. -- do this better on a refactor.
-	std::cout << "HP: " << character.playerVariables.currentHP << "/" << character.playerVariables.maxHP << std::endl;
-
 	char spaces[mapX][mapY];
 
 	//std::cout << currentHP << std::endl;
+		//ran into trouble using a get method on the player class, so resorted to accessing the variable directly. -- do these better on a refactor.
+	
+	if (character.playerVariables.posX == rat.enemyVariables.posX && character.playerVariables.posY == rat.enemyVariables.posY)
+	{
+		enemyEncounter(rat, character);
+		character.playerVariables.posX -= 1;
+	}
+	else if (character.playerVariables.posX == goblin.enemyVariables.posX && character.playerVariables.posY == goblin.enemyVariables.posY)
+	{
+		enemyEncounter(goblin, character);
+		character.playerVariables.posX -= 1;
+	}
+	else if (character.playerVariables.posX == thief.enemyVariables.posX && character.playerVariables.posY == thief.enemyVariables.posY)
+	{
+		enemyEncounter(thief, character);
+		character.playerVariables.posX -= 1;
+	}
+	else if (character.playerVariables.posX == wolf.enemyVariables.posX && character.playerVariables.posY == wolf.enemyVariables.posY)
+	{
+		enemyEncounter(wolf, character);
+		character.playerVariables.posX -= 1;
+	}
 
+	std::cout << "HP: " << character.playerVariables.currentHP << "/" << character.playerVariables.maxHP;
+
+	//use a range for loop here on a refactor
+	for (int p = 0; p < 5; p++)
+	{
+		std::cout << " ";
+	}
+	std::cout << "Gold: " << character.playerVariables.gold << "g" << std::endl;
 	std::cout << "+";
 
 	for (int k = 0; k <= (mapX-1); k++)
@@ -159,21 +192,18 @@ void map(const static Player &character)
 			}
 
 		}
-
 		std::cout << "|" << std::endl;
 	}
-
 	std::cout << "+";
 	for (int k = 0; k <= (mapX-1); k++)
 		std::cout << "-";
 	std::cout << "+";
 	std::cout << std::endl;
-
 }
 
+
+	
 /*
-if (x == enemy1[0] && y == enemy1[1])
-enemyEncounter(enemy::enemies::E_RAT);
 else if (x == enemy2[0] && y == enemy2[1])
 enemyEncounter(enemy::enemies::E_GOBLIN);
 else if (x == enemy3[0] && y == enemy3[1])
@@ -188,42 +218,54 @@ const int enemy4[2] = { random_num(1, 18), random_num(1, 18) };
 const int enemy5[2] = { random_num(1, 18), random_num(1, 18) };
 */
 
-char enemyEncounter(const static Enemy::enemies &monster)
+int enemyEncounter(Enemy &monster, const static Player &character)
 {
 	int choice;
-	unsigned char result;
+	unsigned char result = 0;
+	bool combat = true;
 
 	system("CLS");
-	std::cout << "You encountered a ";
-	switch(monster)
+
+	std::cout << "You encountered an enemy ";
+
+	switch(monster.enemyVariables.enemyType)
 	{
-	case(0):
-		std::cout << "rat!\n";
+	case(Enemy::E_RAT):
+		std::cout << "rat!\n" << std::endl;
 		break;
-	case(1):
-		std::cout << "goblin!\n";
+	case(Enemy::E_GOBLIN):
+		std::cout << "goblin!\n" << std::endl;
 		break;
-	case(2):
-		std::cout << "thief!\n";
+	case(Enemy::E_THIEF):
+		std::cout << "thief!\n" << std::endl;
 		break;
-	case(3):
-		std::cout << "wolf!\n";
+	case(Enemy::E_WOLF):
+		std::cout << "wolf!\n" << std::endl;
 		break;
 	}
 
-	std::cout << "1. Attack\n"
-		<< "Selection: ";
-
-	std::cin >> choice;
-
-	if (choice == 1)
+	while (combat)
 	{
-		result = 1;
+		std::cout << "Enemy HP: " << monster.enemyVariables.currentHP << "/" << monster.enemyVariables.startingHP << std::endl;
+		std::cout << "\nYour HP: " << character.playerVariables.currentHP << "/" << character.playerVariables.maxHP << std::endl;
+		std::cout << "1. Attack\n"
+			<< "Selection: ";
+
+		std::cin >> choice;
+
+		if (choice == 1)
+		{
+			int dmg = damageFormula(character);
+			std::cout << "You did " << dmg << " point of damage\n" << std::endl;;
+			monster.enemyVariables.currentHP -= dmg;
+			system("CLS");
+			if (monster.enemyVariables.currentHP <= 0)
+			{
+				result = 1;
+				combat = false;
+			}
+		}
 	}
-
-	std::cin.ignore();
-	std::cin.get();
-
 	system("CLS");
 
 	return result;
@@ -362,11 +404,11 @@ void askMovement(Player &player)
 	gotoxy(0, 0);
 }
 
-float damageFormula(const static Player::weapons &weapon)
+int damageFormula(const static Player &character)
 {
-	float dmg;
+	int dmg;
 
-	dmg = random_num((weapon+1), (weapon+1));
+	dmg = random_num((character.playerVariables.currentWeapon+1), (character.playerVariables.currentWeapon+1));
 
 	return dmg;
 }

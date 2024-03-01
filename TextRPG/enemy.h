@@ -36,19 +36,39 @@ public:
 		B_OGRE
 	};
 
-	
 	struct
 	{
-		int hp = (enemies::E_RAT) + 5;
+		int enemyType;
+		int startingHP;
+		int currentHP;
+		//use mapsize to determine the max random num -- do this on a refactor
 		int posX = (random_num(1, 18));
 		int posY = (random_num(1, 18));
-		
+
 	}enemyVariables;
 
-	Enemy() 
+	Enemy(enemies monster) 
 	{
-		
-		enemyVariables.hp;
+		enemyVariables.startingHP = monster + 5;
+
+		if (monster == E_RAT)
+		{
+			enemyVariables.enemyType = E_RAT;
+		}
+		else if (monster == E_GOBLIN)
+		{
+			enemyVariables.enemyType = E_GOBLIN;
+		}
+		else if (monster == E_THIEF)
+		{
+			enemyVariables.enemyType = E_THIEF;
+		}
+		else if (monster == E_WOLF)
+		{
+			enemyVariables.enemyType == E_WOLF;
+		}
+		enemyVariables.startingHP;
+		enemyVariables.currentHP = enemyVariables.startingHP;
 		enemyVariables.posX;
 		enemyVariables.posY;
 
@@ -56,18 +76,18 @@ public:
 
 	int getHP(const static Enemy& enemy)
 	{
-		return enemy.enemyVariables.hp;
+		return enemy.enemyVariables.startingHP;
 	}
 
 	int setHP(Enemy& enemy, int hpChange)
 	{
 		if (hpChange >= 0)
 		{
-			enemy.enemyVariables.hp -= hpChange;
+			enemy.enemyVariables.currentHP -= hpChange;
 		}
 		else
 		{
-			enemy.enemyVariables.hp += hpChange;
+			enemy.enemyVariables.currentHP += hpChange;
 		}
 		
 	}
