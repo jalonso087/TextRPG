@@ -24,15 +24,6 @@ public:
 		W_CLAYMORE
 	};
 
-	const enum items : unsigned char
-	{
-		I_HEALTHPOTION,
-		I_ENERGYPOTION,
-		I_KEY,
-		I_TOWNPORTAL
-	};
-
-	
 	struct
 	{
 		int level = 1;

@@ -29,7 +29,18 @@ void gotoxy(short x, short y)
 
 	SetConsoleCursorPosition(hStdout, position);
 }
+/*
+int itemGen()
+{
+	Items healthPot;
 
+	int item = healthPot.spawnItem();
+
+	std::cout << "You receive a " << item << "." << std::endl;
+
+	return item;
+}
+*/
 
 //probably add to display class on a refactor
 int startScreen(void)
@@ -253,22 +264,15 @@ void map(Player &character)
 	std::cout << std::endl;
 }
 
+double goldGen(const static Enemy& monster)
+{
+	double goldAmount = (random_num(1, 10)) * (monster.enemyVariables.enemyType + 1);
 
-	
-/*
-else if (x == enemy2[0] && y == enemy2[1])
-enemyEncounter(enemy::enemies::E_GOBLIN);
-else if (x == enemy3[0] && y == enemy3[1])
-enemyEncounter(enemy::enemies::E_THIEF);
-else if (x == enemy4[0] && y == enemy4[1])
-enemyEncounter(enemy::enemies::E_WOLF);
+	std::cout << "You receive " << goldAmount << " gold." << std::endl;
 
-const int enemy1[2] = { random_num(1, 18), random_num(1, 18) };
-const int enemy2[2] = { random_num(1, 18), random_num(1, 18) };
-const int enemy3[2] = { random_num(1, 18), random_num(1, 18) };
-const int enemy4[2] = { random_num(1, 18), random_num(1, 18) };
-const int enemy5[2] = { random_num(1, 18), random_num(1, 18) };
-*/
+	return goldAmount;
+}
+
 
 int enemyEncounter(Enemy &monster, Player &character)
 {
@@ -360,7 +364,9 @@ int enemyEncounter(Enemy &monster, Player &character)
 				
 				if (monster.enemyVariables.currentHP <= 0)
 				{
-					std::cout << "You defeated the monster!\nPress enter to continue." << std::endl;
+					std::cout << "You defeated the monster!\n" << std::endl;
+
+					character.playerVariables.gold += goldGen(monster);
 					
 					std::cin.ignore();
 
