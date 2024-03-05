@@ -121,7 +121,7 @@ Enemy goblin(Enemy::E_GOBLIN);
 Enemy thief(Enemy::E_THIEF);
 Enemy wolf(Enemy::E_WOLF);
 
-//bundle into a display class on a refactor
+//bundle into a MAP class on a refactor
 void map(Player &character)
 {
 	char spaces[mapX][mapY];
@@ -463,7 +463,7 @@ void askMovement(Player &player)
 	while (!validMove)
 	{
 		std::cout
-			<< "Use your wasd keys to move.\n";
+			<< "Use your wasd or arrow keys to move.\n";
 
 		const enum arrowKey
 		{
@@ -480,6 +480,7 @@ void askMovement(Player &player)
 		switch (_getch())
 		{
 		case(KEY_W):
+		case(KEY_UP):
 		{
 			player.playerVariables.posX -= 1;
 			if (player.playerVariables.posX == mapMarkerLocations.townX && player.playerVariables.posY == mapMarkerLocations.townY)
@@ -494,6 +495,7 @@ void askMovement(Player &player)
 			break;
 		}
 		case(KEY_S):
+		case(KEY_DOWN):
 		{
 			player.playerVariables.posX += 1;
 			if (player.playerVariables.posX == mapMarkerLocations.townX && player.playerVariables.posY == mapMarkerLocations.townY)
@@ -507,6 +509,7 @@ void askMovement(Player &player)
 			break;
 		}
 		case(KEY_A):
+		case(KEY_LEFT):
 		{
 			player.playerVariables.posY -= 1;
 			if (player.playerVariables.posX == mapMarkerLocations.townX && player.playerVariables.posY == mapMarkerLocations.townY)
@@ -520,6 +523,7 @@ void askMovement(Player &player)
 			break;
 		}
 		case(KEY_D):
+		case(KEY_RIGHT):
 		{
 			player.playerVariables.posY += 1;
 			if (player.playerVariables.posX == mapMarkerLocations.townX && player.playerVariables.posY == mapMarkerLocations.townY)
