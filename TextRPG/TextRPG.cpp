@@ -2,7 +2,7 @@
 //* TextRPG
 //* Javier Alonso
 //* 2/27/24 - Present
-//* v0.02
+//* v0.03
 //**********************************
 
 #include <iostream>
@@ -108,23 +108,35 @@ void map(Player &character)
 	
 	if (character.playerVariables.posX == rat.enemyVariables.posX && character.playerVariables.posY == rat.enemyVariables.posY)
 	{
-		enemyEncounter(rat, character);
-		character.playerVariables.posX -= 1;
+		if (rat.enemyVariables.currentHP > 0)
+		{
+			enemyEncounter(rat, character);
+			character.playerVariables.posX -= 1;
+		}
 	}
 	else if (character.playerVariables.posX == goblin.enemyVariables.posX && character.playerVariables.posY == goblin.enemyVariables.posY)
 	{
-		enemyEncounter(goblin, character);
-		character.playerVariables.posX -= 1;
+		if (goblin.enemyVariables.currentHP > 0)
+		{
+			enemyEncounter(goblin, character);
+			character.playerVariables.posX -= 1;
+		}
 	}
 	else if (character.playerVariables.posX == thief.enemyVariables.posX && character.playerVariables.posY == thief.enemyVariables.posY)
 	{
-		enemyEncounter(thief, character);
-		character.playerVariables.posX -= 1;
+		if (thief.enemyVariables.currentHP > 0)
+		{
+			enemyEncounter(thief, character);
+			character.playerVariables.posX -= 1;
+		}
 	}
 	else if (character.playerVariables.posX == wolf.enemyVariables.posX && character.playerVariables.posY == wolf.enemyVariables.posY)
 	{
-		enemyEncounter(wolf, character);
-		character.playerVariables.posX -= 1;
+		if (wolf.enemyVariables.currentHP > 0)
+		{
+			enemyEncounter(wolf, character);
+			character.playerVariables.posX -= 1;
+		}
 	}
 
 	std::cout << "HP: " << character.playerVariables.currentHP << "/" << character.playerVariables.maxHP;
@@ -167,22 +179,50 @@ void map(Player &character)
 			}
 			else if (i == rat.enemyVariables.posX && j == rat.enemyVariables.posY)
 			{
-				spaces[i][j] = mapMarkers.enemy;
+				if (rat.enemyVariables.currentHP > 0)
+				{
+					spaces[i][j] = mapMarkers.enemy;
+				}
+				else
+				{
+					spaces[i][j] = mapMarkers.emptySpace;
+				}
 				std::cout << spaces[i][j];
 			}
 			else if (i == goblin.enemyVariables.posX && j == goblin.enemyVariables.posY)
 			{
-				spaces[i][j] = mapMarkers.enemy;
+				if (goblin.enemyVariables.currentHP > 0)
+				{
+					spaces[i][j] = mapMarkers.enemy;
+				}
+				else
+				{
+					spaces[i][j] = mapMarkers.emptySpace;
+				}
 				std::cout << spaces[i][j];
 			}
 			else if (i == thief.enemyVariables.posX && j == thief.enemyVariables.posY)
 			{
-				spaces[i][j] = mapMarkers.enemy;
+				if (thief.enemyVariables.currentHP > 0)
+				{
+					spaces[i][j] = mapMarkers.enemy;
+				}
+				else
+				{
+					spaces[i][j] = mapMarkers.emptySpace;
+				}
 				std::cout << spaces[i][j];
 			}
 			else if (i == wolf.enemyVariables.posX && j == wolf.enemyVariables.posY)
 			{
-				spaces[i][j] = mapMarkers.enemy;
+				if (wolf.enemyVariables.currentHP > 0)
+				{
+					spaces[i][j] = mapMarkers.enemy;
+				}
+				else
+				{
+					spaces[i][j] = mapMarkers.emptySpace;
+				}
 				std::cout << spaces[i][j];
 			}
 			else
@@ -222,7 +262,9 @@ int enemyEncounter(Enemy &monster, const static Player &character)
 {
 	int choice;
 	unsigned char result = 0;
-	bool combat = true;
+	bool combat;
+
+	combat = true;
 
 	system("CLS");
 
