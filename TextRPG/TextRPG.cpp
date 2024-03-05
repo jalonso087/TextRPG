@@ -17,8 +17,9 @@
 #include "enemy.h"
 
 void visitTown(Player &character);
-int enemyEncounter(Enemy &monster, const static Player &character);
+int enemyEncounter(Enemy &monster, Player &character);
 int damageFormula(const static Player& character);
+int enemyDamageFormula(const static Enemy& monster);
 
 //found online
 void gotoxy(short x, short y)
@@ -258,7 +259,7 @@ const int enemy4[2] = { random_num(1, 18), random_num(1, 18) };
 const int enemy5[2] = { random_num(1, 18), random_num(1, 18) };
 */
 
-int enemyEncounter(Enemy &monster, const static Player &character)
+int enemyEncounter(Enemy &monster, Player &character)
 {
 	int choice;
 	unsigned char result = 0;
@@ -286,26 +287,92 @@ int enemyEncounter(Enemy &monster, const static Player &character)
 		break;
 	}
 
+	std::cout << "Press enter to continue." << std::endl;
+	std::cin.get();
+
+	system("CLS");
+
+	bool playerTurn = true;
+	bool compTurn = false;
+
 	while (combat)
 	{
+		std::cout << "BATTLE\n---------" << std::endl;
 		std::cout << "Enemy HP: " << monster.enemyVariables.currentHP << "/" << monster.enemyVariables.startingHP << std::endl;
 		std::cout << "\nYour HP: " << character.playerVariables.currentHP << "/" << character.playerVariables.maxHP << std::endl;
-		std::cout << "1. Attack\n"
-			<< "Selection: ";
+		std::cout << "---------" << std::endl;
 
-		std::cin >> choice;
-
-		if (choice == 1)
+		if (playerTurn == true && compTurn == false)
 		{
-			int dmg = damageFormula(character);
-			std::cout << "You did " << dmg << " point of damage\n" << std::endl;;
-			monster.enemyVariables.currentHP -= dmg;
-			system("CLS");
-			if (monster.enemyVariables.currentHP <= 0)
+			std::cout << "1. Attack\n" << std::endl; 
+			std::cout << "Selection: ";
+
+			std::cin >> choice;
+
+			if (choice == 1)
 			{
-				result = 1;
-				combat = false;
+				int dmg = damageFormula(character);
+				std::cout << "You did " << dmg << " point(s) of damage with your ";
+				switch (character.playerVariables.currentWeapon)
+				{
+					case(Player::W_STICK):
+					{
+						std::cout << "stick!\n" << std::endl;
+						break;
+					}
+					case(Player::W_CLUB):
+					{
+						std::cout << "club!\n" << std::endl;
+						break;
+					}
+					case(Player::W_HAMMER):
+					{
+						std::cout << "hammer!\n" << std::endl;
+						break;
+					}
+					case(Player::W_MACE):
+					{
+						std::cout << "mace!\n" << std::endl;
+						break;
+					}
+				}
+				monster.enemyVariables.currentHP -= dmg;
+
+				std::cin.ignore();
+				std::cin.get();
+
+				playerTurn = false;
+				compTurn = true;
+				
+				system("CLS");
+				
+				if (monster.enemyVariables.currentHP <= 0)
+				{
+					std::cout << "You defeated the monster!\nPress enter to continue." << std::endl;
+					
+					std::cin.ignore();
+
+					result = 1;
+					combat = false;
+				}
 			}
+
+		} 
+		else if (compTurn == true && playerTurn == false)
+		{
+			int dmg;
+			dmg = enemyDamageFormula(monster);
+			
+			std::cout << "You take " << dmg << " damage from the monster!" << std::endl;
+
+			character.playerVariables.currentHP -= dmg;
+
+			compTurn = false;
+			playerTurn = true;
+
+			std::cin.ignore();
+
+			system("CLS");
 		}
 	}
 	system("CLS");
@@ -450,7 +517,16 @@ int damageFormula(const static Player &character)
 {
 	int dmg;
 
-	dmg = random_num((character.playerVariables.currentWeapon+1), (character.playerVariables.currentWeapon+1));
+	dmg = random_num((character.playerVariables.currentWeapon+1), (character.playerVariables.currentWeapon+3));
+
+	return dmg;
+}
+
+int enemyDamageFormula(const static Enemy& monster)
+{
+	int dmg;
+
+	dmg = random_num((monster.enemyVariables.enemyType + 1), (monster.enemyVariables.enemyType + 2));
 
 	return dmg;
 }

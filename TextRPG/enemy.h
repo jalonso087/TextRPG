@@ -74,9 +74,14 @@ public:
 
 	};
 
-	int getHP(const static Enemy& enemy)
+	int getStartingHP(const static Enemy& enemy)
 	{
 		return enemy.enemyVariables.startingHP;
+	}
+
+	int getCurrentHP(const static Enemy& enemy)
+	{
+		return enemy.enemyVariables.currentHP;
 	}
 
 	int setHP(Enemy& enemy, int hpChange)
