@@ -42,6 +42,7 @@ public:
 		int currentHP;
 		int gold = 0;
 		int currentWeapon = W_STICK;
+		bool defeated;
 
 	}playerVariables;
 
@@ -54,6 +55,7 @@ public:
 		playerVariables.currentHP = playerVariables.maxHP;
 		playerVariables.gold;
 		playerVariables.currentWeapon;
+		playerVariables.defeated;
 	}
 
 	//std::string inventory(player& player, std::string item)

@@ -71,6 +71,17 @@ int random_num(const static int &start, const static int &max)
 	return random;
 }
 
+void checkDefeated(const static Player& character)
+{
+	if (character.playerVariables.defeated == true)
+	{
+		system("CLS");
+		std::cout << "You lose." << std::endl;
+		std::cin.ignore();
+		exit(EXIT_SUCCESS);
+	}
+}
+
 //maybe create a struct to house these together -- on a refactor
 const static int mapX = 20;
 const static int mapY = 20;
@@ -264,6 +275,7 @@ int enemyEncounter(Enemy &monster, Player &character)
 	int choice;
 	unsigned char result = 0;
 	bool combat;
+	int defeated = 0;
 
 	combat = true;
 
@@ -367,10 +379,17 @@ int enemyEncounter(Enemy &monster, Player &character)
 
 			character.playerVariables.currentHP -= dmg;
 
+			std::cin.ignore();
+
+			if (character.playerVariables.currentHP <= 0)
+			{
+				character.playerVariables.defeated = true;
+			}
+
+			checkDefeated(character);
+
 			compTurn = false;
 			playerTurn = true;
-
-			std::cin.ignore();
 
 			system("CLS");
 		}
