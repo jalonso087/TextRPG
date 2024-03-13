@@ -17,12 +17,19 @@
 #include "enemy.h"
 
 void visitTown(Player &character);
-int enemyEncounter(Enemy &monster, Player &character);
 int damageFormula(const static Player& character);
-int enemyDamageFormula(const static Enemy& monster);
 bool dungeonCheck(Player& character);
 
-//found online
+std::string operator * (std::string a, int num)
+{
+	std::string newStr;
+	while (num--)
+	{
+		newStr += a;
+	}
+	return newStr;
+}
+
 void gotoxy(short x, short y)
 {
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -30,18 +37,6 @@ void gotoxy(short x, short y)
 
 	SetConsoleCursorPosition(hStdout, position);
 }
-/*
-int itemGen()
-{
-	Items healthPot;
-
-	int item = healthPot.spawnItem();
-
-	std::cout << "You receive a " << item << "." << std::endl;
-
-	return item;
-}
-*/
 
 //probably add to display class on a refactor
 int startScreen(void)
@@ -83,18 +78,9 @@ int random_num(const static int &start, const static int &max)
 	return random;
 }
 
-void checkDefeated(const static Player& character)
-{
-	if (character.playerVariables.defeated == true)
-	{
-		system("CLS");
-		std::cout << "You lose." << std::endl;
-		std::cin.ignore();
-		exit(EXIT_SUCCESS);
-	}
-}
 
-//maybe create a struct to house these together -- on a refactor
+
+//maybe create a struct to house the map -- on a refactor
 const static int mapX = 20;
 const static int mapY = 20;
 
@@ -126,6 +112,7 @@ Enemy dragon(Enemy::E_DRAGON);
 //bundle into a display class on a refactor
 void map(Player &character)
 {
+	std::string border = "-";
 	char spaces[mapX][mapY];
 
 	//std::cout << currentHP << std::endl;
@@ -135,7 +122,7 @@ void map(Player &character)
 	{
 		if (rat.enemyVariables.currentHP > 0)
 		{
-			enemyEncounter(rat, character);
+			rat.enemyEncounter(character);
 			character.playerVariables.posX -= 1;
 		}
 	}
@@ -143,7 +130,7 @@ void map(Player &character)
 	{
 		if (goblin.enemyVariables.currentHP > 0)
 		{
-			enemyEncounter(goblin, character);
+			goblin.enemyEncounter(character);
 			character.playerVariables.posX -= 1;
 		}
 	}
@@ -151,7 +138,7 @@ void map(Player &character)
 	{
 		if (thief.enemyVariables.currentHP > 0)
 		{
-			enemyEncounter(thief, character);
+			thief.enemyEncounter(character);
 			character.playerVariables.posX -= 1;
 		}
 	}
@@ -159,7 +146,7 @@ void map(Player &character)
 	{
 		if (wolf.enemyVariables.currentHP > 0)
 		{
-			enemyEncounter(wolf, character);
+			wolf.enemyEncounter(character);
 			character.playerVariables.posX -= 1;
 		}
 	}
@@ -167,7 +154,7 @@ void map(Player &character)
 	{
 		if (dungeonCheck(character))
 		{
-			enemyEncounter(dragon, character);
+			dragon.enemyEncounter(character);
 			character.playerVariables.posX -= 1;
 		}
 	}
@@ -182,10 +169,12 @@ void map(Player &character)
 	std::cout << "Gold: " << character.playerVariables.gold << "g" << std::endl;
 	std::cout << "+";
 
-	for (int k = 0; k <= (mapX-1); k++)
-	{
-		std::cout << "-";
-	}
+	//for (int k = 0; k <= (mapX-1); k++)
+	//{
+	//	std::cout << "-";
+	//}
+	std::cout << border * (mapX);
+
 
 	std::cout << "+";
 	std::cout << std::endl;
@@ -274,206 +263,11 @@ void map(Player &character)
 	std::cout << std::endl;
 }
 
-void lootGen(Player &character)
-{
-	double goldAmount = (random_num(1, 10)) * 2;
-	int rand = random_num(1, 10);
-
-	if (rand >= 1 && rand <= 10)
-	{
-		std::cout << "You receive " << goldAmount << " gold." << std::endl;
-		character.playerVariables.gold += goldAmount;
-	}
-	
-	if (rand > 4 && rand < 8)
-	{
-		std::cout << "You receive 10 health potions.";
-		character.playerVariables.potions += 10;
-	}
-	else if (rand > 7 && rand <= 10)
-	{
-		std::cout << "You receive a hammer.";
-		character.playerVariables.currentWeapon = Player::W_HAMMER;
-	}
-}
-
 bool dungeonCheck(Player& character)
 {
 	return(character.playerVariables.maxHP == 32);
 }
 
-int enemyEncounter(Enemy &monster, Player &character)
-{
-	int choice;
-	unsigned char result = 0;
-	bool combat;
-	int defeated = 0;
-
-	combat = true;
-
-	system("CLS");
-
-	std::cout << "You encountered an enemy ";
-
-	switch(monster.enemyVariables.enemyType)
-	{
-	case(Enemy::E_RAT):
-		std::cout << "rat!\n" << std::endl;
-		break;
-	case(Enemy::E_GOBLIN):
-		std::cout << "goblin!\n" << std::endl;
-		break;
-	case(Enemy::E_THIEF):
-		std::cout << "thief!\n" << std::endl;
-		break;
-	case(Enemy::E_WOLF):					
-		std::cout << "wolf!\n" << std::endl;
-		break;
-	case(Enemy::B_DRAGON):
-		std::cout << "DRAGON!\n" << std::endl;
-		break;
-	}
-
-	std::cout << "Press enter to continue." << std::endl;
-	std::cin.get();
-
-	system("CLS");
-
-	bool playerTurn = true;
-	bool compTurn = false;
-
-	while (combat)
-	{
-		std::cout << "BATTLE\n---------" << std::endl;
-		std::cout << "Enemy HP: " << monster.enemyVariables.currentHP << "/" << monster.enemyVariables.startingHP << std::endl;
-		std::cout << "\nYour HP: " << character.playerVariables.currentHP << "/" << character.playerVariables.maxHP << std::endl;
-		std::cout << "---------" << std::endl;
-
-		if (playerTurn == true && compTurn == false)
-		{
-			std::cout << "1. Attack" << std::endl; 
-			std::cout << "2. Potions x" << character.playerVariables.potions << std::endl;
-			std::cout << "3. Run" << std::endl;
-			std::cout << "Selection: ";
-
-			std::cin >> choice;
-
-			if (choice == 1)	//Attack
-			{
-				int dmg = damageFormula(character);
-				std::cout << "You did " << dmg << " point(s) of damage with your ";
-				switch (character.playerVariables.currentWeapon)
-				{
-					case(Player::W_STICK):
-					{
-						std::cout << "stick!\n" << std::endl;
-						break;
-					}
-					case(Player::W_CLUB):
-					{
-						std::cout << "club!\n" << std::endl;
-						break;
-					}
-					case(Player::W_HAMMER):
-					{
-						std::cout << "hammer!\n" << std::endl;
-						break;
-					}
-					case(Player::W_MACE):
-					{
-						std::cout << "mace!\n" << std::endl;
-						break;
-					}
-				}
-				monster.enemyVariables.currentHP -= dmg;
-
-				std::cin.ignore();
-				std::cin.get();
-
-				playerTurn = false;
-				compTurn = true;
-				
-				system("CLS");
-				
-				if (monster.enemyVariables.currentHP <= 0)
-				{
-					std::cout << "You defeated the monster!" << std::endl;
-					std::cout << "You have become stronger." << std::endl;
-					character.playerVariables.maxHP += 5;
-
-					lootGen(character);
-					
-					std::cin.ignore();
-
-					result = 1;
-					combat = false;
-				}
-			}
-			else if (choice == 2)	//Potions
-			{
-				if (character.playerVariables.currentHP < character.playerVariables.maxHP && character.playerVariables.potions > 0)
-				{
-					system("CLS");
-					character.playerVariables.currentHP = character.playerVariables.maxHP;
-					character.playerVariables.potions -= 1;
-					std::cout << "You have healed completely." << std::endl;
-					std::cin.ignore();
-					std::cin.get();
-					system("CLS");
-				}
-				else if (character.playerVariables.currentHP == character.playerVariables.maxHP)
-				{
-					system("CLS");
-					std::cout << "You are already at full health." << std::endl;
-					std::cin.ignore();
-					std::cin.get();
-					system("CLS");
-				}
-				else if (character.playerVariables.potions == 0)
-				{
-					system("CLS");
-					std::cout << "You do not have any potions." << std::endl;
-					std::cin.ignore();
-					std::cin.get();
-					system("CLS");
-				}
-			}
-			else if (choice == 3)	//Run
-			{
-				character.playerVariables.posX -= 1;
-			}
-
-		} 
-		
-		else if (compTurn == true && playerTurn == false)
-		{
-			int dmg;
-			dmg = enemyDamageFormula(monster);
-			
-			std::cout << "You take " << dmg << " damage from the monster!" << std::endl;
-
-			character.playerVariables.currentHP -= dmg;
-
-			std::cin.ignore();
-
-			if (character.playerVariables.currentHP <= 0)
-			{
-				character.playerVariables.defeated = true;
-			}
-
-			checkDefeated(character);
-
-			compTurn = false;
-			playerTurn = true;
-
-			system("CLS");
-		}
-	}
-	system("CLS");
-
-	return result;
-
-}
 //not const static because we update character position
 void visitTown(Player &character)
 {
@@ -675,24 +469,6 @@ void askMovement(Player &player)
 	gotoxy(0, 0);
 }
 
-int damageFormula(const static Player &character)
-{
-	int dmg;
-
-	dmg = random_num((character.playerVariables.currentWeapon+1), (character.playerVariables.currentWeapon+3));
-
-	return dmg;
-}
-
-int enemyDamageFormula(const static Enemy& monster)
-{
-	int dmg;
-
-	dmg = random_num((monster.enemyVariables.enemyType + 1), (monster.enemyVariables.enemyType + 2));
-
-	return dmg;
-}
-
 int main(void)
 {
 	srand(time(NULL));
@@ -723,8 +499,9 @@ int main(void)
 		//game loop here
 		map(playerOne);
 		askMovement(playerOne);
-		if (playerOne.playerVariables.currentHP == 37)
+		if (playerOne.playerVariables.maxHP == 37)
 		{
+			system("CLS");
 			std::cout << "You win!" << std::endl;
 			std::cout << "Press enter to exit." << std::endl;
 			playGame = false;

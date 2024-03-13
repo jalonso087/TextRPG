@@ -1,5 +1,7 @@
 #pragma once
 
+int random_num(const static int& start, const static int& max);
+
 class Player
 {
 private:
@@ -77,6 +79,52 @@ public:
 			playerVariables.currentHP += hpChange;
 		}
 
+	}
+
+	void checkDefeated()
+	{
+		if (playerVariables.defeated == true)
+		{
+			system("CLS");
+			std::cout << "You lose." << std::endl;
+			std::cin.ignore();
+			exit(EXIT_SUCCESS);
+		}
+	}
+
+	void lootGen()
+	{
+		double goldAmount = (random_num(1, 10)) * 2;
+		int rand = random_num(1, 10);
+
+		if (rand >= 1 && rand <= 10)
+		{
+			std::cout << "You receive " << goldAmount << " gold." << std::endl;
+			playerVariables.gold += goldAmount;
+		}
+
+		if (rand > 4 && rand < 8)
+		{
+			std::cout << "You receive 10 health potions.";
+			playerVariables.potions += 10;
+		}
+		else if (rand > 7 && rand <= 10)
+		{
+			if (playerVariables.currentWeapon != W_HAMMER)
+			{
+				std::cout << "You receive a hammer.";
+				playerVariables.currentWeapon = W_HAMMER;
+			}
+		}
+	}
+
+	int damageFormula()
+	{
+		int dmg;
+
+		dmg = random_num((playerVariables.currentWeapon + 1), (playerVariables.currentWeapon + 3));
+
+		return dmg;
 	}
 
 };
