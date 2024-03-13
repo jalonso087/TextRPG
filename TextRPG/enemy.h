@@ -10,7 +10,7 @@ protected:
 
 public:
 
-	const enum enemies : unsigned char
+	const enum Enemies : unsigned char
 	{
 		E_RAT,
 		E_GOBLIN ,
