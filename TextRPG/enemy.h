@@ -13,14 +13,15 @@ public:
 	const enum enemies : unsigned char
 	{
 		E_RAT,
-		E_GOBLIN,
+		E_GOBLIN ,
 		E_THIEF,
 		E_WOLF,
 		E_SKELETON,
 		E_SPIDER,
 		E_ORC,
 		E_WIZARD,
-		E_OGRE
+		E_OGRE,
+		E_DRAGON
 	};
 
 	const enum boss : unsigned char
@@ -33,7 +34,8 @@ public:
 		B_SPIDER,
 		B_ORC,
 		B_WIZARD,
-		B_OGRE
+		B_OGRE,
+		B_DRAGON
 	};
 
 	struct
@@ -49,7 +51,7 @@ public:
 
 	Enemy(enemies monster) 
 	{
-		enemyVariables.startingHP = monster + 5;
+		enemyVariables.startingHP = (monster * 2) + 5;
 
 		if (monster == E_RAT)
 		{
@@ -65,7 +67,11 @@ public:
 		}
 		else if (monster == E_WOLF)
 		{
-			enemyVariables.enemyType == E_WOLF;
+			enemyVariables.enemyType = E_WOLF;
+		}
+		else if (monster == E_DRAGON)
+		{
+			enemyVariables.enemyType = E_DRAGON;
 		}
 		enemyVariables.startingHP;
 		enemyVariables.currentHP = enemyVariables.startingHP;

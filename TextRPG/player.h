@@ -33,6 +33,7 @@ public:
 		int currentHP;
 		int gold = 0;
 		int currentWeapon = W_STICK;
+		int potions = 0;
 		bool defeated;
 
 	}playerVariables;

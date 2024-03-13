@@ -20,6 +20,7 @@ void visitTown(Player &character);
 int enemyEncounter(Enemy &monster, Player &character);
 int damageFormula(const static Player& character);
 int enemyDamageFormula(const static Enemy& monster);
+bool dungeonCheck(Player& character);
 
 //found online
 void gotoxy(short x, short y)
@@ -62,8 +63,8 @@ int startScreen(void)
 void intro(void)
 {
 	std::cout
-		<< "Instructions go here\n"
-		<< "Also instructions.\nMore instructions\n\n"
+		<< "Defeat all 4 (E)nemies to unlock the (D)ungeon.\n"
+		<< "Use the town to rest and buy potions.\n\n"
 		<< "Press enter to continue.\n";
 	
 	//just use cin to assign to a dummy variable on a refactor
@@ -120,6 +121,7 @@ Enemy rat(Enemy::E_RAT);
 Enemy goblin(Enemy::E_GOBLIN);
 Enemy thief(Enemy::E_THIEF);
 Enemy wolf(Enemy::E_WOLF);
+Enemy dragon(Enemy::E_DRAGON);
 
 //bundle into a display class on a refactor
 void map(Player &character)
@@ -158,6 +160,14 @@ void map(Player &character)
 		if (wolf.enemyVariables.currentHP > 0)
 		{
 			enemyEncounter(wolf, character);
+			character.playerVariables.posX -= 1;
+		}
+	}
+	else if (character.playerVariables.posX == mapMarkerLocations.dungeonX && character.playerVariables.posY == mapMarkerLocations.dungeonY)
+	{
+		if (dungeonCheck(character))
+		{
+			enemyEncounter(dragon, character);
 			character.playerVariables.posX -= 1;
 		}
 	}
@@ -264,15 +274,33 @@ void map(Player &character)
 	std::cout << std::endl;
 }
 
-double goldGen(const static Enemy& monster)
+void lootGen(Player &character)
 {
-	double goldAmount = (random_num(1, 10)) * (monster.enemyVariables.enemyType + 1);
+	double goldAmount = (random_num(1, 10)) * 2;
+	int rand = random_num(1, 10);
 
-	std::cout << "You receive " << goldAmount << " gold." << std::endl;
-
-	return goldAmount;
+	if (rand >= 1 && rand <= 10)
+	{
+		std::cout << "You receive " << goldAmount << " gold." << std::endl;
+		character.playerVariables.gold += goldAmount;
+	}
+	
+	if (rand > 4 && rand < 8)
+	{
+		std::cout << "You receive 10 health potions.";
+		character.playerVariables.potions += 10;
+	}
+	else if (rand > 7 && rand <= 10)
+	{
+		std::cout << "You receive a hammer.";
+		character.playerVariables.currentWeapon = Player::W_HAMMER;
+	}
 }
 
+bool dungeonCheck(Player& character)
+{
+	return(character.playerVariables.maxHP == 32);
+}
 
 int enemyEncounter(Enemy &monster, Player &character)
 {
@@ -298,8 +326,11 @@ int enemyEncounter(Enemy &monster, Player &character)
 	case(Enemy::E_THIEF):
 		std::cout << "thief!\n" << std::endl;
 		break;
-	case(Enemy::E_WOLF):
+	case(Enemy::E_WOLF):					
 		std::cout << "wolf!\n" << std::endl;
+		break;
+	case(Enemy::B_DRAGON):
+		std::cout << "DRAGON!\n" << std::endl;
 		break;
 	}
 
@@ -320,12 +351,14 @@ int enemyEncounter(Enemy &monster, Player &character)
 
 		if (playerTurn == true && compTurn == false)
 		{
-			std::cout << "1. Attack\n" << std::endl; 
+			std::cout << "1. Attack" << std::endl; 
+			std::cout << "2. Potions x" << character.playerVariables.potions << std::endl;
+			std::cout << "3. Run" << std::endl;
 			std::cout << "Selection: ";
 
 			std::cin >> choice;
 
-			if (choice == 1)
+			if (choice == 1)	//Attack
 			{
 				int dmg = damageFormula(character);
 				std::cout << "You did " << dmg << " point(s) of damage with your ";
@@ -364,9 +397,11 @@ int enemyEncounter(Enemy &monster, Player &character)
 				
 				if (monster.enemyVariables.currentHP <= 0)
 				{
-					std::cout << "You defeated the monster!\n" << std::endl;
+					std::cout << "You defeated the monster!" << std::endl;
+					std::cout << "You have become stronger." << std::endl;
+					character.playerVariables.maxHP += 5;
 
-					character.playerVariables.gold += goldGen(monster);
+					lootGen(character);
 					
 					std::cin.ignore();
 
@@ -374,8 +409,42 @@ int enemyEncounter(Enemy &monster, Player &character)
 					combat = false;
 				}
 			}
+			else if (choice == 2)	//Potions
+			{
+				if (character.playerVariables.currentHP < character.playerVariables.maxHP && character.playerVariables.potions > 0)
+				{
+					system("CLS");
+					character.playerVariables.currentHP = character.playerVariables.maxHP;
+					character.playerVariables.potions -= 1;
+					std::cout << "You have healed completely." << std::endl;
+					std::cin.ignore();
+					std::cin.get();
+					system("CLS");
+				}
+				else if (character.playerVariables.currentHP == character.playerVariables.maxHP)
+				{
+					system("CLS");
+					std::cout << "You are already at full health." << std::endl;
+					std::cin.ignore();
+					std::cin.get();
+					system("CLS");
+				}
+				else if (character.playerVariables.potions == 0)
+				{
+					system("CLS");
+					std::cout << "You do not have any potions." << std::endl;
+					std::cin.ignore();
+					std::cin.get();
+					system("CLS");
+				}
+			}
+			else if (choice == 3)	//Run
+			{
+				character.playerVariables.posX -= 1;
+			}
 
 		} 
+		
 		else if (compTurn == true && playerTurn == false)
 		{
 			int dmg;
@@ -411,13 +480,15 @@ void visitTown(Player &character)
 
 	const static enum prices
 	{
-		P_HEALTHPOTION = 20,
-		P_STICK = 10,
-		P_CLUB = 25,
-		P_HAMMER = 100
+		P_HEALTHPOTION = 2,
+		P_STICK = 5,
+		P_CLUB = 20,
+		P_HAMMER = 30
 	};
 
 	int choice = 0;
+
+	system("CLS");
 
 	std::cout
 		<< "Welcome to <town>.\n"
@@ -428,7 +499,17 @@ void visitTown(Player &character)
 	
 	std::cin >> choice;
 
-	if (choice == 2)
+	if (choice == 1)	//INN
+	{
+		system("CLS");
+		std::cout << "You have fully healed." << std::endl;
+		character.playerVariables.currentHP = character.playerVariables.maxHP;
+		std::cin.ignore();
+		std::cin.get();
+		system("CLS");
+		character.playerVariables.posX -= 1;
+	}
+	else if (choice == 2)	//SHOP
 	{
 		system("CLS");
 		int shopChoice;
@@ -437,16 +518,52 @@ void visitTown(Player &character)
 			<< "Welcome to the item shop!\n"
 			<< "1. Health Potion - "
 			<< P_HEALTHPOTION
-			<< "g\n2. Stick - "
-			<< P_STICK
-			<< "g\n3. Club - "
-			<< P_CLUB
-			<< "g\n4. Hammer - "
+			<< "g\n2. Hammer - "
 			<< P_HAMMER
 			<< "g\n"
 			<< "Selection: ";
 
 		std::cin >> shopChoice;
+
+		character.playerVariables.posX -= 1;
+
+		switch (shopChoice)
+		{
+		case(1):
+		{
+			if (character.playerVariables.gold >= 2) //cost of health potion
+			{
+				character.playerVariables.potions += 1;
+				std::cout << "You have purchased 1 health potion." << std::endl;
+				character.playerVariables.gold -= 2;
+			}
+			else
+			{
+				std::cout << "You do not have enough gold for that." << std::endl;
+			}
+				std::cin.ignore();
+				std::cin.get();
+			
+			break;
+		}
+		case(2):
+		{
+			if (character.playerVariables.gold >= 30) //cost of health potion
+			{
+				character.playerVariables.currentWeapon = Player::W_HAMMER;
+				std::cout << "You have purchased and equipped a hammer." << std::endl;
+				character.playerVariables.gold -= 30;
+			}
+			else
+			{
+				std::cout << "You do not have enough gold for that." << std::endl;
+			}
+			std::cin.ignore();
+			std::cin.get();
+
+			break;
+		}
+		}
 	}
 	else if (choice == 3)
 	{
@@ -463,7 +580,7 @@ void askMovement(Player &player)
 	while (!validMove)
 	{
 		std::cout
-			<< "Use your wasd keys to move.\n";
+			<< "Use your WASD or ARROW keys to move.\n BACKSPACE to use a health potion.";
 
 		const enum arrowKey
 		{
@@ -474,11 +591,13 @@ void askMovement(Player &player)
 			KEY_DOWN = 80,
 			KEY_S = 115,
 			KEY_RIGHT = 77,
-			KEY_D = 100
+			KEY_D = 100,
+			KEY_BACK = 8 
 		};
 
 		switch (_getch())
 		{
+		case(KEY_UP):
 		case(KEY_W):
 		{
 			player.playerVariables.posX -= 1;
@@ -493,6 +612,7 @@ void askMovement(Player &player)
 			}
 			break;
 		}
+		case(KEY_DOWN):
 		case(KEY_S):
 		{
 			player.playerVariables.posX += 1;
@@ -506,6 +626,7 @@ void askMovement(Player &player)
 			}
 			break;
 		}
+		case(KEY_LEFT):
 		case(KEY_A):
 		{
 			player.playerVariables.posY -= 1;
@@ -519,6 +640,7 @@ void askMovement(Player &player)
 			}
 			break;
 		}
+		case(KEY_RIGHT):
 		case(KEY_D):
 		{
 			player.playerVariables.posY += 1;
@@ -529,6 +651,21 @@ void askMovement(Player &player)
 			if (player.playerVariables.posY < 0 || player.playerVariables.posY >(mapY - 1))
 			{
 				player.playerVariables.posY -= 1;
+			}
+			break;
+		}
+		case(KEY_BACK):
+		{
+			if (player.playerVariables.potions > 0)
+			{
+				player.playerVariables.currentHP = player.playerVariables.maxHP;
+			}
+			else
+			{
+				system("CLS");
+				std::cout << "You do not have any health potions." << std::endl;
+				std::cin.ignore();
+				system("CLS");
 			}
 			break;
 		}
@@ -586,6 +723,16 @@ int main(void)
 		//game loop here
 		map(playerOne);
 		askMovement(playerOne);
+		if (playerOne.playerVariables.currentHP == 37)
+		{
+			std::cout << "You win!" << std::endl;
+			std::cout << "Press enter to exit." << std::endl;
+			playGame = false;
+			std::cin.ignore();
+			std::cin.get();
+			exit(EXIT_SUCCESS);
+
+		}
 		
 	}
 
