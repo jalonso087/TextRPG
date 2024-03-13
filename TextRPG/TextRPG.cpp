@@ -2,7 +2,7 @@
 //* TextRPG
 //* Javier Alonso
 //* 2/27/24 - Present
-//* v0.03
+//* v1.00
 //**********************************
 
 #include <iostream>
@@ -38,7 +38,6 @@ void gotoxy(short x, short y)
 	SetConsoleCursorPosition(hStdout, position);
 }
 
-//probably add to display class on a refactor
 int startScreen(void)
 {
 	int choice = 0;
@@ -54,15 +53,13 @@ int startScreen(void)
 	return choice;
 }
 
-//probably add to display class on a refactor
 void intro(void)
 {
 	std::cout
 		<< "Defeat all 4 (E)nemies to unlock the (D)ungeon.\n"
 		<< "Use the town to rest and buy potions.\n\n"
 		<< "Press enter to continue.\n";
-	
-	//just use cin to assign to a dummy variable on a refactor
+
 	std::cin.ignore();
 	std::cin.get();
 	
@@ -70,7 +67,6 @@ void intro(void)
 
 }
 
-//leave this as global variable -- on a refactor
 int random_num(const static int &start, const static int &max)
 {
 	int random = start + rand() % (max);
@@ -78,9 +74,6 @@ int random_num(const static int &start, const static int &max)
 	return random;
 }
 
-
-
-//maybe create a struct to house the map -- on a refactor
 const static int mapX = 20;
 const static int mapY = 20;
 
@@ -109,14 +102,11 @@ Enemy thief(Enemy::E_THIEF);
 Enemy wolf(Enemy::E_WOLF);
 Enemy dragon(Enemy::E_DRAGON);
 
-//bundle into a display class on a refactor
 void map(Player &character)
 {
 	std::string border = "-";
+	std::string space = " ";
 	char spaces[mapX][mapY];
-
-	//std::cout << currentHP << std::endl;
-		//ran into trouble using a get method on the player class, so resorted to accessing the variable directly. -- do these better on a refactor.
 	
 	if (character.playerVariables.posX == rat.enemyVariables.posX && character.playerVariables.posY == rat.enemyVariables.posY)
 	{
@@ -160,24 +150,11 @@ void map(Player &character)
 	}
 
 	std::cout << "HP: " << character.playerVariables.currentHP << "/" << character.playerVariables.maxHP;
-
-	//use a range for loop here on a refactor
-	for (int p = 0; p < 5; p++)
-	{
-		std::cout << " ";
-	}
+	std::cout << space * 5;
 	std::cout << "Gold: " << character.playerVariables.gold << "g" << std::endl;
-	std::cout << "+";
-
-	//for (int k = 0; k <= (mapX-1); k++)
-	//{
-	//	std::cout << "-";
-	//}
-	std::cout << border * (mapX);
-
-
-	std::cout << "+";
-	std::cout << std::endl;
+	std::cout << space * 5;
+	std::cout << "Potions: " << character.playerVariables.potions << std::endl;
+	std::cout << "+" << border * (mapX) << "+" << std::endl;
 
 	for (int i = 0; i <= (mapX - 1); i++)
 	{
@@ -256,11 +233,7 @@ void map(Player &character)
 		}
 		std::cout << "|" << std::endl;
 	}
-	std::cout << "+";
-	for (int k = 0; k <= (mapX-1); k++)
-		std::cout << "-";
-	std::cout << "+";
-	std::cout << std::endl;
+	std::cout << "+" << border * (mapX) << "+" << std::endl;
 }
 
 bool dungeonCheck(Player& character)
@@ -319,45 +292,44 @@ void visitTown(Player &character)
 
 		std::cin >> shopChoice;
 
-		character.playerVariables.posX -= 1;
-
 		switch (shopChoice)
 		{
-		case(1):
-		{
-			if (character.playerVariables.gold >= 2) //cost of health potion
+			case(1):
 			{
-				character.playerVariables.potions += 1;
-				std::cout << "You have purchased 1 health potion." << std::endl;
-				character.playerVariables.gold -= 2;
-			}
-			else
-			{
-				std::cout << "You do not have enough gold for that." << std::endl;
-			}
+				if (character.playerVariables.gold >= P_HEALTHPOTION) //price of health potion
+				{
+					character.playerVariables.potions += 1;
+					std::cout << "You have purchased 1 health potion." << std::endl;
+					character.playerVariables.gold -= P_HEALTHPOTION;
+				}
+				else
+				{
+					std::cout << "You do not have enough gold for that." << std::endl;
+				}
 				std::cin.ignore();
 				std::cin.get();
 			
-			break;
-		}
-		case(2):
-		{
-			if (character.playerVariables.gold >= 30) //cost of health potion
-			{
-				character.playerVariables.currentWeapon = Player::W_HAMMER;
-				std::cout << "You have purchased and equipped a hammer." << std::endl;
-				character.playerVariables.gold -= 30;
+				break;
 			}
-			else
+			case(2):
 			{
-				std::cout << "You do not have enough gold for that." << std::endl;
-			}
-			std::cin.ignore();
-			std::cin.get();
+				if (character.playerVariables.gold >= P_HAMMER) //price of hammer
+				{
+					character.playerVariables.currentWeapon = Player::W_HAMMER;
+					std::cout << "You have purchased and equipped a hammer." << std::endl;
+					character.playerVariables.gold -= P_HAMMER;
+				}
+				else
+				{
+					std::cout << "You do not have enough gold for that." << std::endl;
+				}
+				std::cin.ignore();
+				std::cin.get();
 
-			break;
+				break;
+			}
 		}
-		}
+		character.playerVariables.posX -= 1;
 	}
 	else if (choice == 3)
 	{
@@ -402,7 +374,6 @@ void askMovement(Player &player)
 			if (player.playerVariables.posX < 0 || player.playerVariables.posX > mapX)
 			{
 				player.playerVariables.posX += 1;
-
 			}
 			break;
 		}
@@ -452,7 +423,11 @@ void askMovement(Player &player)
 		{
 			if (player.playerVariables.potions > 0)
 			{
-				player.playerVariables.currentHP = player.playerVariables.maxHP;
+				while (player.playerVariables.currentHP != player.playerVariables.maxHP)
+				{
+					player.playerVariables.potions -= 1;
+					player.playerVariables.currentHP = player.playerVariables.maxHP;
+				}
 			}
 			else
 			{
@@ -482,7 +457,6 @@ int main(void)
 	if (startChoice == 1)
 	{
 		playGame = true;
-		
 		system("CLS");
 		intro();
 	}
@@ -498,7 +472,6 @@ int main(void)
 	{
 		//game loop here
 		map(playerOne);
-		askMovement(playerOne);
 		if (playerOne.playerVariables.maxHP == 37)
 		{
 			system("CLS");
@@ -506,13 +479,10 @@ int main(void)
 			std::cout << "Press enter to exit." << std::endl;
 			playGame = false;
 			std::cin.ignore();
-			std::cin.get();
 			exit(EXIT_SUCCESS);
-
 		}
-		
+		askMovement(playerOne);
 	}
-
 	std::cin.ignore();
 	std::cin.get();
 }
