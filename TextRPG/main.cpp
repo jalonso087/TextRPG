@@ -104,37 +104,38 @@ Enemy dragon(Enemy::E_DRAGON);
 
 void map(Player &character)
 {
+
 	std::string border = "-";
 	std::string space = " ";
 	char spaces[mapX][mapY];
 	
-	if (character.playerVariables.posX == rat.EnemyStats.posX && character.playerVariables.posY == rat.EnemyStats.posY)
+	if (character.playerVariables.posX == rat.posX && character.playerVariables.posY == rat.posY)
 	{
-		if (rat.EnemyStats.currentHP > 0)
+		if (rat.currentHP > 0)
 		{
 			rat.enemyEncounter(character);
 			character.playerVariables.posX -= 1;
 		}
 	}
-	else if (character.playerVariables.posX == goblin.EnemyStats.posX && character.playerVariables.posY == goblin.EnemyStats.posY)
+	else if (character.playerVariables.posX == goblin.posX && character.playerVariables.posY == goblin.posY)
 	{
-		if (goblin.EnemyStats.currentHP > 0)
+		if (goblin.currentHP > 0)
 		{
 			goblin.enemyEncounter(character);
 			character.playerVariables.posX -= 1;
 		}
 	}
-	else if (character.playerVariables.posX == thief.EnemyStats.posX && character.playerVariables.posY == thief.EnemyStats.posY)
+	else if (character.playerVariables.posX == thief.posX && character.playerVariables.posY == thief.posY)
 	{
-		if (thief.EnemyStats.currentHP > 0)
+		if (thief.currentHP > 0)
 		{
 			thief.enemyEncounter(character);
 			character.playerVariables.posX -= 1;
 		}
 	}
-	else if (character.playerVariables.posX == wolf.EnemyStats.posX && character.playerVariables.posY == wolf.EnemyStats.posY)
+	else if (character.playerVariables.posX == wolf.posX && character.playerVariables.posY == wolf.posY)
 	{
-		if (wolf.EnemyStats.currentHP > 0)
+		if (wolf.currentHP > 0)
 		{
 			wolf.enemyEncounter(character);
 			character.playerVariables.posX -= 1;
@@ -176,9 +177,9 @@ void map(Player &character)
 				spaces[i][j] = mapMarkers.player;
 				std::cout << spaces[i][j];
 			}
-			else if (i == rat.EnemyStats.posX && j == rat.EnemyStats.posY)
+			else if (i == rat.posX && j == rat.posY)
 			{
-				if (rat.EnemyStats.currentHP > 0)
+				if (rat.currentHP > 0)
 				{
 					spaces[i][j] = mapMarkers.enemy;
 				}
@@ -188,9 +189,9 @@ void map(Player &character)
 				}
 				std::cout << spaces[i][j];
 			}
-			else if (i == goblin.EnemyStats.posX && j == goblin.EnemyStats.posY)
+			else if (i == goblin.posX && j == goblin.posY)
 			{
-				if (goblin.EnemyStats.currentHP > 0)
+				if (goblin.currentHP > 0)
 				{
 					spaces[i][j] = mapMarkers.enemy;
 				}
@@ -200,9 +201,9 @@ void map(Player &character)
 				}
 				std::cout << spaces[i][j];
 			}
-			else if (i == thief.EnemyStats.posX && j == thief.EnemyStats.posY)
+			else if (i == thief.posX && j == thief.posY)
 			{
-				if (thief.EnemyStats.currentHP > 0)
+				if (thief.currentHP > 0)
 				{
 					spaces[i][j] = mapMarkers.enemy;
 				}
@@ -212,9 +213,9 @@ void map(Player &character)
 				}
 				std::cout << spaces[i][j];
 			}
-			else if (i == wolf.EnemyStats.posX && j == wolf.EnemyStats.posY)
+			else if (i == wolf.posX && j == wolf.posY)
 			{
-				if (wolf.EnemyStats.currentHP > 0)
+				if (wolf.currentHP > 0)
 				{
 					spaces[i][j] = mapMarkers.enemy;
 				}

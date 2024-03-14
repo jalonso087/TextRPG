@@ -4,36 +4,36 @@
 #include "Player.h"
 #include "Enemy.h"
 
-Enemy::Enemy(Enemies monster)
+Enemy::Enemy(EnemyType monster)
 {
-	//struct EnemyVariables BaseStats;
+	//EnemyVariables EnemyStats;
 
-	EnemyStats.startingHP = (monster * 2) + 5;
+	startingHP = (monster * 2) + 5;
 
 	if (monster == E_RAT)
 	{
-		EnemyStats.enemyType = E_RAT;
+		enemyType = E_RAT;
 	}
 	else if (monster == E_GOBLIN)
 	{
-		EnemyStats.enemyType = E_GOBLIN;
+		enemyType = E_GOBLIN;
 	}
 	else if (monster == E_THIEF)
 	{
-		EnemyStats.enemyType = E_THIEF;
+		enemyType = E_THIEF;
 	}
 	else if (monster == E_WOLF)
 	{
-		EnemyStats.enemyType = E_WOLF;
+		enemyType = E_WOLF;
 	}
 	else if (monster == E_DRAGON)
 	{
-		EnemyStats.enemyType = E_DRAGON;
+		enemyType = E_DRAGON;
 	}
-	EnemyStats.startingHP;
-	EnemyStats.currentHP = EnemyStats.startingHP;
-	EnemyStats.posX;
-	EnemyStats.posY;
+	startingHP;
+	currentHP = startingHP;
+	posX;
+	posY;
 };
 
 //int Enemy::getStartingHP(const static Enemy& enemy)
@@ -62,15 +62,19 @@ Enemy::Enemy(Enemies monster)
 //This seems redundant. If I'm calling the method using rat.method() , why would I be forced to use rat.method(rat)?
 int Enemy::enemyDamageFormula()
 {
+	//EnemyVariables EnemyStats;
+
 	int dmg;
 
-	dmg = random_num(EnemyStats.enemyType + 1, EnemyStats.enemyType + 2);
+	dmg = random_num(enemyType + 1, enemyType + 2);
 
 	return dmg;
 }
 
 int Enemy::enemyEncounter(Player& character)
 {
+	//EnemyVariables EnemyStats;
+
 	int choice;
 	unsigned char result = 0;
 	bool combat = true;
@@ -80,7 +84,7 @@ int Enemy::enemyEncounter(Player& character)
 
 	std::cout << "You encountered an enemy ";
 
-	switch (EnemyStats.enemyType)
+	switch (enemyType)
 	{
 	case(E_RAT):
 		std::cout << "rat!\n" << std::endl;
@@ -110,7 +114,7 @@ int Enemy::enemyEncounter(Player& character)
 	while (combat)
 	{
 		std::cout << "BATTLE\n---------" << std::endl;
-		std::cout << "Enemy HP: " << EnemyStats.currentHP << "/" << EnemyStats.startingHP << std::endl;
+		std::cout << "Enemy HP: " << currentHP << "/" << startingHP << std::endl;
 		std::cout << "\nYour HP: " << character.playerVariables.currentHP << "/" << character.playerVariables.maxHP << std::endl;
 		std::cout << "---------" << std::endl;
 
@@ -150,7 +154,7 @@ int Enemy::enemyEncounter(Player& character)
 					break;
 				}
 				}
-				EnemyStats.currentHP -= dmg;
+				currentHP -= dmg;
 
 				std::cin.ignore();
 				std::cin.get();
@@ -160,7 +164,7 @@ int Enemy::enemyEncounter(Player& character)
 
 				system("CLS");
 
-				if (EnemyStats.currentHP <= 0)
+				if (currentHP <= 0)
 				{
 					std::cout << "You defeated the monster!" << std::endl;
 					std::cout << "You have become stronger." << std::endl;

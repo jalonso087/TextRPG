@@ -7,7 +7,14 @@ class Enemy
 {
 public:
 
-	const enum Enemies
+
+	int enemyType;
+	int startingHP;
+	int currentHP;
+	int posX = (random_num(1, 18));
+	int posY = (random_num(1, 18));
+
+	enum EnemyType
 	{
 		E_RAT,
 		E_GOBLIN,
@@ -16,22 +23,10 @@ public:
 		E_DRAGON = 9
 	};
 
-	struct EnemyVariables
-	{
-		int enemyType;
-		int startingHP;
-		int currentHP;
-		int posX = (random_num(1, 18));
-		int posY = (random_num(1, 18));
-	};
+	Enemy(EnemyType monster);
 
-	//if i make this static, i get a linker error but no compiler error. as is, i get multiple compiler errors but no linker error
-	struct EnemyVariables EnemyStats;
+	int enemyDamageFormula();
 
-	Enemy(Enemies monster);
-
-	static int enemyDamageFormula();
-
-	static int enemyEncounter(Player& character);
+	int enemyEncounter(Player& character);
 
 };
