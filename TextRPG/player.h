@@ -1,11 +1,11 @@
 #pragma once
+//#include "Base.h"
 
-int random_num(const static int& start, const static int& max);
+int random_num(const int& start, const int& max);
 
 class Player
 {
 public:
-
 	int level = 1;
 	int maxHP = (level * 2) + 10;
 	int posX = 0;
@@ -38,5 +38,4 @@ public:
 	int damageFormula(void);
 
 	bool dungeonCheck();
-
 };

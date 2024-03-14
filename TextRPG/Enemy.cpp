@@ -4,6 +4,13 @@
 #include "Player.h"
 #include "Enemy.h"
 
+int random_num(const int& start, const int& max)
+{
+	int random = start + rand() % (max);
+
+	return random;
+}
+
 Enemy::Enemy(EnemyType monster)
 {
 	//EnemyVariables EnemyStats;
@@ -35,28 +42,6 @@ Enemy::Enemy(EnemyType monster)
 	posX;
 	posY;
 };
-
-//int Enemy::getStartingHP(const static Enemy& enemy)
-//{
-//	return EnemyStats.startingHP;
-//}
-
-//int Enemy::getCurrentHP(const static Enemy& enemy)
-//{
-//	return EnemyStats.currentHP;
-//}
-
-//void Enemy::setHP(Enemy& enemy, int hpChange)
-//{
-//	if (hpChange >= 0)
-//	{
-//		EnemyStats.currentHP -= hpChange;
-//	}
-//	else
-//	{
-//		EnemyStats.currentHP += hpChange;
-//	}
-//}
 
 //If a method is part of a specific class, should I ever need to pass an object of that class as an argument?
 //This seems redundant. If I'm calling the method using rat.method() , why would I be forced to use rat.method(rat)?

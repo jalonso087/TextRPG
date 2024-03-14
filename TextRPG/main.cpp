@@ -53,12 +53,7 @@ void intro(void)
 
 }
 
-int random_num(const static int &start, const static int &max)
-{
-	int random = start + rand() % (max);
-	
-	return random;
-}
+
 
 void map(Player &character)
 {
@@ -199,7 +194,7 @@ void map(Player &character)
 void visitTown(Player &character)
 {
 
-	const static enum prices
+	static enum prices
 	{
 		P_HEALTHPOTION = 2,
 		P_STICK = 5,
@@ -439,4 +434,5 @@ int main(void)
 	}
 	std::cin.ignore();
 	std::cin.get();
+	return 0;
 }

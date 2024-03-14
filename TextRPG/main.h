@@ -6,9 +6,10 @@
 #include <Windows.h>
 #include "Player.h"
 #include "Enemy.h"
+//#include "Base.h"
 
-const static int mapX = 20;
-const static int mapY = 20;
+const int mapX = 20;
+const int mapY = 20;
 
 //Map Marker Locations
 const int dungeonX = 4;
@@ -47,8 +48,6 @@ void intro(void);
 int random_num(const int& start, const int& max);
 
 void map(Player& character);
-
-bool dungeonCheck(Player& character);
 
 void visitTown(Player& character);
 

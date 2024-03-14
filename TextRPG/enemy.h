@@ -1,13 +1,12 @@
 #pragma once
 #include "Player.h"
+//#include "Base.h"
 
-int random_num(const static int& start, const static int& max);
+int random_num(const int& start, const int& max);
 
 class Enemy
 {
 public:
-
-
 	int enemyType;
 	int startingHP;
 	int currentHP;

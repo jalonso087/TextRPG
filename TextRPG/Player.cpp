@@ -27,7 +27,7 @@ void Player::checkDefeated()
 
 void Player::lootGen()
 {
-	double goldAmount = (random_num(1, 10)) * 2;
+	int goldAmount = (random_num(1, 10)) * 2;
 	int rand = random_num(1, 10);
 
 	if (rand >= 1 && rand <= 10)
