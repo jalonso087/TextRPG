@@ -4,8 +4,6 @@
 #include "Player.h"
 #include "Enemy.h"
 
-//struct Enemy::EnemyVariables EnemyStats;
-
 Enemy::Enemy(Enemies monster)
 {
 	//struct EnemyVariables BaseStats;
@@ -38,28 +36,30 @@ Enemy::Enemy(Enemies monster)
 	EnemyStats.posY;
 };
 
-int Enemy::getStartingHP(const static Enemy& enemy)
-{
-	return EnemyStats.startingHP;
-}
+//int Enemy::getStartingHP(const static Enemy& enemy)
+//{
+//	return EnemyStats.startingHP;
+//}
 
-int Enemy::getCurrentHP(const static Enemy& enemy)
-{
-	return EnemyStats.currentHP;
-}
+//int Enemy::getCurrentHP(const static Enemy& enemy)
+//{
+//	return EnemyStats.currentHP;
+//}
 
-void Enemy::setHP(Enemy& enemy, int hpChange)
-{
-	if (hpChange >= 0)
-	{
-		EnemyStats.currentHP -= hpChange;
-	}
-	else
-	{
-		EnemyStats.currentHP += hpChange;
-	}
-}
+//void Enemy::setHP(Enemy& enemy, int hpChange)
+//{
+//	if (hpChange >= 0)
+//	{
+//		EnemyStats.currentHP -= hpChange;
+//	}
+//	else
+//	{
+//		EnemyStats.currentHP += hpChange;
+//	}
+//}
 
+//If a method is part of a specific class, should I ever need to pass an object of that class as an argument?
+//This seems redundant. If I'm calling the method using rat.method() , why would I be forced to use rat.method(rat)?
 int Enemy::enemyDamageFormula()
 {
 	int dmg;

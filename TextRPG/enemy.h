@@ -21,20 +21,14 @@ public:
 		int enemyType;
 		int startingHP;
 		int currentHP;
-		//use mapsize to determine the max random num -- do this on a refactor
 		int posX = (random_num(1, 18));
 		int posY = (random_num(1, 18));
 	};
 
-	static struct EnemyVariables EnemyStats;
+	//if i make this static, i get a linker error but no compiler error. as is, i get multiple compiler errors but no linker error
+	struct EnemyVariables EnemyStats;
 
 	Enemy(Enemies monster);
-
-	static int getStartingHP(const static Enemy& enemy);
-
-	static int getCurrentHP(const static Enemy& enemy);
-
-	static void setHP(Enemy& enemy, int hpChange);
 
 	static int enemyDamageFormula();
 

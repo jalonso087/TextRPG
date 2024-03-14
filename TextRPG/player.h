@@ -92,7 +92,31 @@ public:
 		}
 	}
 
-	void lootGen();
+	void lootGen()
+	{
+		double goldAmount = (random_num(1, 10)) * 2;
+		int rand = random_num(1, 10);
+
+		if (rand >= 1 && rand <= 10)
+		{
+			std::cout << "You receive " << goldAmount << " gold." << std::endl;
+			playerVariables.gold += goldAmount;
+		}
+
+		if (rand > 4 && rand < 8)
+		{
+			std::cout << "You receive 10 health potions.";
+			playerVariables.potions += 10;
+		}
+		else if (rand > 7 && rand <= 10)
+		{
+			if (playerVariables.currentWeapon != W_HAMMER)
+			{
+				std::cout << "You receive a hammer.";
+				playerVariables.currentWeapon = W_HAMMER;
+			}
+		}
+	}
 
 	int damageFormula()
 	{
