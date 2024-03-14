@@ -35,17 +35,17 @@ Enemy dragon(Enemy::E_DRAGON);
 
 std::string operator * (std::string a, int num);
 
-void visitTown(Player& character);
-
-bool dungeonCheck(Player& character);
-
-void gotoxy(short x, short y);
+int random_num(const int& start, const int& max);
 
 int startScreen(void);
 
 void intro(void);
 
-int random_num(const int& start, const int& max);
+void visitTown(Player& character);
+
+bool dungeonCheck(Player& character);
+
+void gotoxy(short x, short y);
 
 void map(Player& character);
 

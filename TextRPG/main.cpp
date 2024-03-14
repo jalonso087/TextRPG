@@ -16,14 +16,6 @@ std::string operator * (std::string a, int num)
 	return newStr;
 }
 
-void gotoxy(short x, short y)
-{
-	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
-	COORD position = { x, y };
-
-	SetConsoleCursorPosition(hStdout, position);
-}
-
 int startScreen(void)
 {
 	int choice = 0;
@@ -48,12 +40,18 @@ void intro(void)
 
 	std::cin.ignore();
 	std::cin.get();
-	
+
 	system("CLS");
 
 }
 
+void gotoxy(short x, short y)
+{
+	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD position = { x, y };
 
+	SetConsoleCursorPosition(hStdout, position);
+}
 
 void map(Player &character)
 {
