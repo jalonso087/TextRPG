@@ -2,23 +2,9 @@
 //* TextRPG
 //* Javier Alonso
 //* 2/27/24 - Present
-//* v1.00
+//* v1.01
 //**********************************
-
-#include <iostream>
-#include <string>
-#include <stdlib.h>
-#include <vector>
-#include <random>
-#include <conio.h>
-#include <Windows.h>
-#include "player.h"
-#include "mainMenu.h"
-#include "Enemy.h"
-
-void visitTown(Player &character);
-//int damageFormula(const static Player& character);
-bool dungeonCheck(Player& character);
+#include "Main.h"
 
 std::string operator * (std::string a, int num)
 {
@@ -74,34 +60,6 @@ int random_num(const static int &start, const static int &max)
 	return random;
 }
 
-const static int mapX = 20;
-const static int mapY = 20;
-
-struct
-{
-	char player = 'X';
-	char emptySpace = '.';
-	char town = 'T';
-	char dungeon = 'D';
-	char enemy = 'E';
-
-}mapMarkers;
-
-struct
-{
-	int dungeonX = 4;
-	int dungeonY = 15;
-	int townX = 17;
-	int townY = 9;
-
-}mapMarkerLocations;
-
-Enemy rat(Enemy::E_RAT);
-Enemy goblin(Enemy::E_GOBLIN);
-Enemy thief(Enemy::E_THIEF);
-Enemy wolf(Enemy::E_WOLF);
-Enemy dragon(Enemy::E_DRAGON);
-
 void map(Player &character)
 {
 
@@ -109,52 +67,52 @@ void map(Player &character)
 	std::string space = " ";
 	char spaces[mapX][mapY];
 	
-	if (character.playerVariables.posX == rat.posX && character.playerVariables.posY == rat.posY)
+	if (character.posX == rat.posX && character.posY == rat.posY)
 	{
 		if (rat.currentHP > 0)
 		{
 			rat.enemyEncounter(character);
-			character.playerVariables.posX -= 1;
+			character.posX -= 1;
 		}
 	}
-	else if (character.playerVariables.posX == goblin.posX && character.playerVariables.posY == goblin.posY)
+	else if (character.posX == goblin.posX && character.posY == goblin.posY)
 	{
 		if (goblin.currentHP > 0)
 		{
 			goblin.enemyEncounter(character);
-			character.playerVariables.posX -= 1;
+			character.posX -= 1;
 		}
 	}
-	else if (character.playerVariables.posX == thief.posX && character.playerVariables.posY == thief.posY)
+	else if (character.posX == thief.posX && character.posY == thief.posY)
 	{
 		if (thief.currentHP > 0)
 		{
 			thief.enemyEncounter(character);
-			character.playerVariables.posX -= 1;
+			character.posX -= 1;
 		}
 	}
-	else if (character.playerVariables.posX == wolf.posX && character.playerVariables.posY == wolf.posY)
+	else if (character.posX == wolf.posX && character.posY == wolf.posY)
 	{
 		if (wolf.currentHP > 0)
 		{
 			wolf.enemyEncounter(character);
-			character.playerVariables.posX -= 1;
+			character.posX -= 1;
 		}
 	}
-	else if (character.playerVariables.posX == mapMarkerLocations.dungeonX && character.playerVariables.posY == mapMarkerLocations.dungeonY)
+	else if (character.posX == dungeonX && character.posY == dungeonY)
 	{
-		if (dungeonCheck(character))
+		if (character.dungeonCheck())
 		{
 			dragon.enemyEncounter(character);
-			character.playerVariables.posX -= 1;
+			character.posX -= 1;
 		}
 	}
 
-	std::cout << "HP: " << character.playerVariables.currentHP << "/" << character.playerVariables.maxHP;
+	std::cout << "HP: " << character.currentHP << "/" << character.maxHP;
 	std::cout << space * 5;
-	std::cout << "Gold: " << character.playerVariables.gold << "g" << std::endl;
+	std::cout << "Gold: " << character.gold << "g" << std::endl;
 	std::cout << space * 5;
-	std::cout << "Potions: " << character.playerVariables.potions << std::endl;
+	std::cout << "Potions: " << character.potions << std::endl;
 	std::cout << "+" << border * (mapX) << "+" << std::endl;
 
 	for (int i = 0; i <= (mapX - 1); i++)
@@ -162,30 +120,30 @@ void map(Player &character)
 		std::cout << "|";
 		for (int j = 0; j <= (mapY - 1); j++)
 		{
-			if (i == mapMarkerLocations.dungeonX && j == mapMarkerLocations.dungeonY)
+			if (i == dungeonX && j == dungeonY)
 			{
-				spaces[i][j] = mapMarkers.dungeon;
+				spaces[i][j] = dungeon;
 				std::cout << spaces[i][j];
 			}
-			else if (i == mapMarkerLocations.townX && j == mapMarkerLocations.townY)
+			else if (i == townX && j == townY)
 			{
-				spaces[i][j] = mapMarkers.town;
+				spaces[i][j] = town;
 				std::cout << spaces[i][j];
 			}
-			else if (i == character.playerVariables.posX && j == character.playerVariables.posY)
+			else if (i == character.posX && j == character.posY)
 			{
-				spaces[i][j] = mapMarkers.player;
+				spaces[i][j] = player;
 				std::cout << spaces[i][j];
 			}
 			else if (i == rat.posX && j == rat.posY)
 			{
 				if (rat.currentHP > 0)
 				{
-					spaces[i][j] = mapMarkers.enemy;
+					spaces[i][j] = enemy;
 				}
 				else
 				{
-					spaces[i][j] = mapMarkers.emptySpace;
+					spaces[i][j] = emptySpace;
 				}
 				std::cout << spaces[i][j];
 			}
@@ -193,11 +151,11 @@ void map(Player &character)
 			{
 				if (goblin.currentHP > 0)
 				{
-					spaces[i][j] = mapMarkers.enemy;
+					spaces[i][j] = enemy;
 				}
 				else
 				{
-					spaces[i][j] = mapMarkers.emptySpace;
+					spaces[i][j] = emptySpace;
 				}
 				std::cout << spaces[i][j];
 			}
@@ -205,11 +163,11 @@ void map(Player &character)
 			{
 				if (thief.currentHP > 0)
 				{
-					spaces[i][j] = mapMarkers.enemy;
+					spaces[i][j] = enemy;
 				}
 				else
 				{
-					spaces[i][j] = mapMarkers.emptySpace;
+					spaces[i][j] = emptySpace;
 				}
 				std::cout << spaces[i][j];
 			}
@@ -217,17 +175,17 @@ void map(Player &character)
 			{
 				if (wolf.currentHP > 0)
 				{
-					spaces[i][j] = mapMarkers.enemy;
+					spaces[i][j] = enemy;
 				}
 				else
 				{
-					spaces[i][j] = mapMarkers.emptySpace;
+					spaces[i][j] = emptySpace;
 				}
 				std::cout << spaces[i][j];
 			}
 			else
 			{
-				spaces[i][j] = mapMarkers.emptySpace;
+				spaces[i][j] = emptySpace;
 				std::cout << spaces[i][j];
 			}
 
@@ -235,11 +193,6 @@ void map(Player &character)
 		std::cout << "|" << std::endl;
 	}
 	std::cout << "+" << border * (mapX) << "+" << std::endl;
-}
-
-bool dungeonCheck(Player& character)
-{
-	return(character.playerVariables.maxHP == 32);
 }
 
 //not const static because we update character position
@@ -271,11 +224,11 @@ void visitTown(Player &character)
 	{
 		system("CLS");
 		std::cout << "You have fully healed." << std::endl;
-		character.playerVariables.currentHP = character.playerVariables.maxHP;
+		character.currentHP = character.maxHP;
 		std::cin.ignore();
 		std::cin.get();
 		system("CLS");
-		character.playerVariables.posX -= 1;
+		character.posX -= 1;
 	}
 	else if (choice == 2)	//SHOP
 	{
@@ -297,11 +250,11 @@ void visitTown(Player &character)
 		{
 			case(1):
 			{
-				if (character.playerVariables.gold >= P_HEALTHPOTION) //price of health potion
+				if (character.gold >= P_HEALTHPOTION) //price of health potion
 				{
-					character.playerVariables.potions += 1;
+					character.potions += 1;
 					std::cout << "You have purchased 1 health potion." << std::endl;
-					character.playerVariables.gold -= P_HEALTHPOTION;
+					character.gold -= P_HEALTHPOTION;
 				}
 				else
 				{
@@ -314,11 +267,11 @@ void visitTown(Player &character)
 			}
 			case(2):
 			{
-				if (character.playerVariables.gold >= P_HAMMER) //price of hammer
+				if (character.gold >= P_HAMMER) //price of hammer
 				{
-					character.playerVariables.currentWeapon = Player::W_HAMMER;
+					character.currentWeapon = Player::W_HAMMER;
 					std::cout << "You have purchased and equipped a hammer." << std::endl;
-					character.playerVariables.gold -= P_HAMMER;
+					character.gold -= P_HAMMER;
 				}
 				else
 				{
@@ -330,11 +283,11 @@ void visitTown(Player &character)
 				break;
 			}
 		}
-		character.playerVariables.posX -= 1;
+		character.posX -= 1;
 	}
 	else if (choice == 3)
 	{
-		character.playerVariables.posX -= 1;
+		character.posX -= 1;
 	}
 	system("CLS");
 }
@@ -367,67 +320,67 @@ void askMovement(Player &player)
 		case(KEY_UP):
 		case(KEY_W):
 		{
-			player.playerVariables.posX -= 1;
-			if (player.playerVariables.posX == mapMarkerLocations.townX && player.playerVariables.posY == mapMarkerLocations.townY)
+			player.posX -= 1;
+			if (player.posX == townX && player.posY == townY)
 			{
 				visitTown(player);
 			}
-			if (player.playerVariables.posX < 0 || player.playerVariables.posX > mapX)
+			if (player.posX < 0 || player.posX > mapX)
 			{
-				player.playerVariables.posX += 1;
+				player.posX += 1;
 			}
 			break;
 		}
 		case(KEY_DOWN):
 		case(KEY_S):
 		{
-			player.playerVariables.posX += 1;
-			if (player.playerVariables.posX == mapMarkerLocations.townX && player.playerVariables.posY == mapMarkerLocations.townY)
+			player.posX += 1;
+			if (player.posX == townX && player.posY == townY)
 			{
 				visitTown(player);
 			}
-			if (player.playerVariables.posX < 0 || player.playerVariables.posX >(mapX - 1))
+			if (player.posX < 0 || player.posX >(mapX - 1))
 			{
-				player.playerVariables.posX -= 1;
+				player.posX -= 1;
 			}
 			break;
 		}
 		case(KEY_LEFT):
 		case(KEY_A):
 		{
-			player.playerVariables.posY -= 1;
-			if (player.playerVariables.posX == mapMarkerLocations.townX && player.playerVariables.posY == mapMarkerLocations.townY)
+			player.posY -= 1;
+			if (player.posX == townX && player.posY == townY)
 			{
 				visitTown(player);
 			}
-			if (player.playerVariables.posY < 0 || player.playerVariables.posY > mapY)
+			if (player.posY < 0 || player.posY > mapY)
 			{
-				player.playerVariables.posY += 1;
+				player.posY += 1;
 			}
 			break;
 		}
 		case(KEY_RIGHT):
 		case(KEY_D):
 		{
-			player.playerVariables.posY += 1;
-			if (player.playerVariables.posX == mapMarkerLocations.townX && player.playerVariables.posY == mapMarkerLocations.townY)
+			player.posY += 1;
+			if (player.posX == townX && player.posY == townY)
 			{
 				visitTown(player);
 			}
-			if (player.playerVariables.posY < 0 || player.playerVariables.posY >(mapY - 1))
+			if (player.posY < 0 || player.posY >(mapY - 1))
 			{
-				player.playerVariables.posY -= 1;
+				player.posY -= 1;
 			}
 			break;
 		}
 		case(KEY_BACK):
 		{
-			if (player.playerVariables.potions > 0)
+			if (player.potions > 0)
 			{
-				while (player.playerVariables.currentHP != player.playerVariables.maxHP)
+				while (player.currentHP != player.maxHP)
 				{
-					player.playerVariables.potions -= 1;
-					player.playerVariables.currentHP = player.playerVariables.maxHP;
+					player.potions -= 1;
+					player.currentHP = player.maxHP;
 				}
 			}
 			else
@@ -473,7 +426,7 @@ int main(void)
 	{
 		//game loop here
 		map(playerOne);
-		if (playerOne.playerVariables.maxHP == 37)
+		if (playerOne.maxHP == 37)
 		{
 			system("CLS");
 			std::cout << "You win!" << std::endl;

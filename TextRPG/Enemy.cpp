@@ -115,13 +115,13 @@ int Enemy::enemyEncounter(Player& character)
 	{
 		std::cout << "BATTLE\n---------" << std::endl;
 		std::cout << "Enemy HP: " << currentHP << "/" << startingHP << std::endl;
-		std::cout << "\nYour HP: " << character.playerVariables.currentHP << "/" << character.playerVariables.maxHP << std::endl;
+		std::cout << "\nYour HP: " << character.currentHP << "/" << character.maxHP << std::endl;
 		std::cout << "---------" << std::endl;
 
 		if (playerTurn == true && compTurn == false)
 		{
 			std::cout << "1. Attack" << std::endl;
-			std::cout << "2. Potions x" << character.playerVariables.potions << std::endl;
+			std::cout << "2. Potions x" << character.potions << std::endl;
 			std::cout << "3. Run" << std::endl;
 			std::cout << "Selection: ";
 
@@ -131,7 +131,7 @@ int Enemy::enemyEncounter(Player& character)
 			{
 				int dmg = character.damageFormula();
 				std::cout << "You did " << dmg << " point(s) of damage with your ";
-				switch (character.playerVariables.currentWeapon)
+				switch (character.currentWeapon)
 				{
 				case(Player::W_STICK):
 				{
@@ -168,7 +168,7 @@ int Enemy::enemyEncounter(Player& character)
 				{
 					std::cout << "You defeated the monster!" << std::endl;
 					std::cout << "You have become stronger." << std::endl;
-					character.playerVariables.maxHP += 5;
+					character.maxHP += 5;
 
 					character.lootGen();
 
@@ -180,17 +180,17 @@ int Enemy::enemyEncounter(Player& character)
 			}
 			else if (choice == 2)	//Potions
 			{
-				if (character.playerVariables.currentHP < character.playerVariables.maxHP && character.playerVariables.potions > 0)
+				if (character.currentHP < character.maxHP && character.potions > 0)
 				{
 					system("CLS");
-					character.playerVariables.currentHP = character.playerVariables.maxHP;
-					character.playerVariables.potions -= 1;
+					character.currentHP = character.maxHP;
+					character.potions -= 1;
 					std::cout << "You have healed completely." << std::endl;
 					std::cin.ignore();
 					std::cin.get();
 					system("CLS");
 				}
-				else if (character.playerVariables.currentHP == character.playerVariables.maxHP)
+				else if (character.currentHP == character.maxHP)
 				{
 					system("CLS");
 					std::cout << "You are already at full health." << std::endl;
@@ -198,7 +198,7 @@ int Enemy::enemyEncounter(Player& character)
 					std::cin.get();
 					system("CLS");
 				}
-				else if (character.playerVariables.potions == 0)
+				else if (character.potions == 0)
 				{
 					system("CLS");
 					std::cout << "You do not have any potions." << std::endl;
@@ -221,13 +221,13 @@ int Enemy::enemyEncounter(Player& character)
 
 			std::cout << "You take " << dmg << " damage from the monster!" << std::endl;
 
-			character.playerVariables.currentHP -= dmg;
+			character.currentHP -= dmg;
 
 			std::cin.ignore();
 
-			if (character.playerVariables.currentHP <= 0)
+			if (character.currentHP <= 0)
 			{
-				character.playerVariables.defeated = true;
+				character.defeated = true;
 			}
 
 			character.checkDefeated();
