@@ -14,10 +14,10 @@
 #include <Windows.h>
 #include "player.h"
 #include "mainMenu.h"
-#include "enemy.h"
+#include "Enemy.h"
 
 void visitTown(Player &character);
-int damageFormula(const static Player& character);
+//int damageFormula(const static Player& character);
 bool dungeonCheck(Player& character);
 
 std::string operator * (std::string a, int num)
@@ -108,33 +108,33 @@ void map(Player &character)
 	std::string space = " ";
 	char spaces[mapX][mapY];
 	
-	if (character.playerVariables.posX == rat.enemyVariables.posX && character.playerVariables.posY == rat.enemyVariables.posY)
+	if (character.playerVariables.posX == rat.EnemyStats.posX && character.playerVariables.posY == rat.EnemyStats.posY)
 	{
-		if (rat.enemyVariables.currentHP > 0)
+		if (rat.EnemyStats.currentHP > 0)
 		{
 			rat.enemyEncounter(character);
 			character.playerVariables.posX -= 1;
 		}
 	}
-	else if (character.playerVariables.posX == goblin.enemyVariables.posX && character.playerVariables.posY == goblin.enemyVariables.posY)
+	else if (character.playerVariables.posX == goblin.EnemyStats.posX && character.playerVariables.posY == goblin.EnemyStats.posY)
 	{
-		if (goblin.enemyVariables.currentHP > 0)
+		if (goblin.EnemyStats.currentHP > 0)
 		{
 			goblin.enemyEncounter(character);
 			character.playerVariables.posX -= 1;
 		}
 	}
-	else if (character.playerVariables.posX == thief.enemyVariables.posX && character.playerVariables.posY == thief.enemyVariables.posY)
+	else if (character.playerVariables.posX == thief.EnemyStats.posX && character.playerVariables.posY == thief.EnemyStats.posY)
 	{
-		if (thief.enemyVariables.currentHP > 0)
+		if (thief.EnemyStats.currentHP > 0)
 		{
 			thief.enemyEncounter(character);
 			character.playerVariables.posX -= 1;
 		}
 	}
-	else if (character.playerVariables.posX == wolf.enemyVariables.posX && character.playerVariables.posY == wolf.enemyVariables.posY)
+	else if (character.playerVariables.posX == wolf.EnemyStats.posX && character.playerVariables.posY == wolf.EnemyStats.posY)
 	{
-		if (wolf.enemyVariables.currentHP > 0)
+		if (wolf.EnemyStats.currentHP > 0)
 		{
 			wolf.enemyEncounter(character);
 			character.playerVariables.posX -= 1;
@@ -176,9 +176,9 @@ void map(Player &character)
 				spaces[i][j] = mapMarkers.player;
 				std::cout << spaces[i][j];
 			}
-			else if (i == rat.enemyVariables.posX && j == rat.enemyVariables.posY)
+			else if (i == rat.EnemyStats.posX && j == rat.EnemyStats.posY)
 			{
-				if (rat.enemyVariables.currentHP > 0)
+				if (rat.EnemyStats.currentHP > 0)
 				{
 					spaces[i][j] = mapMarkers.enemy;
 				}
@@ -188,9 +188,9 @@ void map(Player &character)
 				}
 				std::cout << spaces[i][j];
 			}
-			else if (i == goblin.enemyVariables.posX && j == goblin.enemyVariables.posY)
+			else if (i == goblin.EnemyStats.posX && j == goblin.EnemyStats.posY)
 			{
-				if (goblin.enemyVariables.currentHP > 0)
+				if (goblin.EnemyStats.currentHP > 0)
 				{
 					spaces[i][j] = mapMarkers.enemy;
 				}
@@ -200,9 +200,9 @@ void map(Player &character)
 				}
 				std::cout << spaces[i][j];
 			}
-			else if (i == thief.enemyVariables.posX && j == thief.enemyVariables.posY)
+			else if (i == thief.EnemyStats.posX && j == thief.EnemyStats.posY)
 			{
-				if (thief.enemyVariables.currentHP > 0)
+				if (thief.EnemyStats.currentHP > 0)
 				{
 					spaces[i][j] = mapMarkers.enemy;
 				}
@@ -212,9 +212,9 @@ void map(Player &character)
 				}
 				std::cout << spaces[i][j];
 			}
-			else if (i == wolf.enemyVariables.posX && j == wolf.enemyVariables.posY)
+			else if (i == wolf.EnemyStats.posX && j == wolf.EnemyStats.posY)
 			{
-				if (wolf.enemyVariables.currentHP > 0)
+				if (wolf.EnemyStats.currentHP > 0)
 				{
 					spaces[i][j] = mapMarkers.enemy;
 				}

@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="main.h" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="main.cpp" />
