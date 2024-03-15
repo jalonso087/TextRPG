@@ -13,9 +13,8 @@ int random_num(const int& start, const int& max)
 
 Enemy::Enemy(EnemyType monster)
 {
-	//EnemyVariables EnemyStats;
 
-	startingHP = (monster * 2) + 5;
+	maxHP = (monster * 2) + 5;
 
 	if (monster == E_RAT)
 	{
@@ -37,10 +36,10 @@ Enemy::Enemy(EnemyType monster)
 	{
 		enemyType = E_DRAGON;
 	}
-	startingHP;
-	currentHP = startingHP;
-	posX;
-	posY;
+
+	currentHP = maxHP;
+	posX = random_num(1, mapX);
+	posY = random_num(1, mapY);
 };
 
 //If a method is part of a specific class, should I ever need to pass an object of that class as an argument?
@@ -99,7 +98,7 @@ int Enemy::enemyEncounter(Player& character)
 	while (combat)
 	{
 		std::cout << "BATTLE\n---------" << std::endl;
-		std::cout << "Enemy HP: " << currentHP << "/" << startingHP << std::endl;
+		std::cout << "Enemy HP: " << currentHP << "/" << maxHP << std::endl;
 		std::cout << "\nYour HP: " << character.currentHP << "/" << character.maxHP << std::endl;
 		std::cout << "---------" << std::endl;
 
@@ -123,19 +122,9 @@ int Enemy::enemyEncounter(Player& character)
 					std::cout << "stick!\n" << std::endl;
 					break;
 				}
-				case(Player::W_CLUB):
-				{
-					std::cout << "club!\n" << std::endl;
-					break;
-				}
 				case(Player::W_HAMMER):
 				{
 					std::cout << "hammer!\n" << std::endl;
-					break;
-				}
-				case(Player::W_MACE):
-				{
-					std::cout << "mace!\n" << std::endl;
 					break;
 				}
 				}

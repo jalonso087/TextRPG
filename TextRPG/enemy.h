@@ -1,17 +1,17 @@
 #pragma once
 #include "Player.h"
-//#include "Base.h"
 
 int random_num(const int& start, const int& max);
 
-class Enemy
+class Enemy : public Base
 {
 public:
+	
 	int enemyType;
-	int startingHP;
-	int currentHP;
-	int posX = (random_num(1, 18));
-	int posY = (random_num(1, 18));
+	//int startingHP;
+	//int currentHP;
+	//int posX = (random_num(1, 18));
+	//int posY = (random_num(1, 18));
 
 	enum EnemyType
 	{

@@ -4,12 +4,9 @@
 #include <random>
 #include <conio.h>
 #include <Windows.h>
+#include "Base.h"
 #include "Player.h"
 #include "Enemy.h"
-//#include "Base.h"
-
-const int mapX = 20;
-const int mapY = 20;
 
 //Map Marker Locations
 const int dungeonX = 4;
@@ -52,6 +49,3 @@ void map(Player& character);
 void visitTown(Player& character);
 
 void askMovement(Player& player);
-
-int main(void);
-

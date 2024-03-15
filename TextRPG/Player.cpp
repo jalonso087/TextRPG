@@ -4,14 +4,13 @@
 
 Player::Player()
 {
-	level;
-	maxHP;
-	posX;
-	posY;
+	maxHP = 12;
+	posX = 0;
+	posY = 0;
 	currentHP = maxHP;
-	gold;
-	currentWeapon;
-	defeated;
+	gold = 0;
+	currentWeapon = W_STICK;
+	defeated = false;
 }
 
 void Player::checkDefeated()
